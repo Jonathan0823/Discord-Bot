@@ -39,12 +39,18 @@ client.on("messageCreate", async (message) => {
   if (message.author.bot || !message.content.startsWith("?")) return;
 
   // Extract the command from the message
-  const commandName = message.content.slice(1).trim().toLowerCase();
+  const args = message.content.slice(1).trim().split(/\s+/); // Split the message by spaces
+  const commandName = args.shift().toLowerCase(); // Take the first word as the command name
 
   // Find and execute the command
   const command = commands.find((cmd) => cmd.data.name === commandName);
   if (command) {
-    await command.execute(message);
+    try {
+      await command.execute(message, args); // Pass the remaining arguments to the command
+    } catch (error) {
+      console.error(error);
+      await message.reply("There was an error executing that command!");
+    }
   }
 });
 
