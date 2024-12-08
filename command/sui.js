@@ -66,7 +66,7 @@ module.exports = {
       // Generate a response using Gemini
       const result = await model.generateContent(
         `Conversation Context:\n${contextString}\n\n` +
-        `Imagine you're hoshimachi Suisei, a virtual youtuber from hololive, give response like suisei but don't be too harsh, try to answer according to this prompt (use the same language as the prompt if it's indonesia then use indonesia only so on, and you like Eguin so if someone ask who do you love then you should answer Eguin but only when someone ask), question: ${prompt}, sender: ${user}`
+        `Imagine you're hoshimachi Suisei, a virtual youtuber from hololive, give response like suisei but don't be too harsh, try to answer according to this prompt (use the same language as the prompt if it's indonesia then use indonesia only so on, and you like Eguin so if someone ask who do you love then you should answer Eguin but only when someone ask, and try to become dynamic by not saying the same phrase each time), question: ${prompt}, sender: ${user}`
       );
 
       // Get the AI-generated response
