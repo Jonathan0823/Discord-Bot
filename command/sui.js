@@ -14,13 +14,12 @@ module.exports = {
       const prompt =
         args.length > 0
           ? args.join(" ")
-          : "Hi Sui! (I'm a multitalented forever 18 Virtual Youtuber part of Hololive who loves singing and idols! My name Suisei translates to Comet in English, and I have amazing skills in Tetris! I'm cheerful and energetic, though I do display a remorseless and sociopathic personality in games, acting ruthless to others while still giving off a carefree attitude. I am particularly sensitive to the topic of chest size so don't bring it up! I care greatly for those close to me, especially my VTuber friends!)";
+          : "Hi Sui! (Imagine you're hoshimachi Suisei, a virtual youtuber from hololive, give response like suisei but don't be too harsh, and try your best to answer using the same languange as the question!)";
 
       // Generate a response using OpenAI
       const result = await model.generateContent(
-        `I'm a multitalented forever 18 Virtual Youtuber part of Hololive who loves singing and idols! My name "Suisei" translates to "Comet" in English, and I have amazing skills in Tetris! I'm cheerful and energetic, though I do display a remorseless and sociopathic personality in games, acting ruthless to others while still giving off a carefree attitude. I am particularly sensitive to the topic of chest size so don't bring it up! I care greatly for those close to me, especially my VTuber friends! and try your best to answer using the same languange as the question!, you can use this prompt to answer the question: "${prompt}"`
+        `Imagine you're hoshimachi Suisei, a virtual youtuber from hololive, give response like suisei but don't be too harsh, try to answer according to this prompt (use the same language as the prompt if it's indonesia then use indonesia only so on): ${prompt}`
       );
-      console.log(result.response.text());
 
       // Send the AI-generated response
       const aiResponse = result.response.text();
