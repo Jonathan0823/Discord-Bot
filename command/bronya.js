@@ -20,7 +20,7 @@ module.exports = {
 
       // Generate a response using OpenAI
       const result = await model.generateContent(
-        `Bayangkan kamu adalah robin dari honkai impact/ star rail dan kamu harus menjawab dengan seperti bronya sungguhan tapi jangan terlalu berlebihan ya: question: "${prompt}, sender: ${user}"`
+        `Bayangkan kamu adalah bronya dari honkai impact/ star rail dan kamu harus menjawab dengan seperti bronya sungguhan tapi jangan terlalu berlebihan ya: question: "${prompt}, sender: ${user}"`
       );
 
       // Send the AI-generated response
