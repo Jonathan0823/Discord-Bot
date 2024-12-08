@@ -6,6 +6,6 @@ module.exports = {
         .setDescription('Replies with help!'),
 
     async execute(interaction) {
-        await interaction.reply('**Suisei**\n- `?sui`\n\n**Bocchi**\n- `?bocchi`\n\n**Hutao**\n- `?hutao`');
+        await interaction.reply('**Suisei**\n- `?suisei`\n\n**Bocchi**\n- `?bocchi`\n\n**Hutao**\n- `?hutao`');
     }
 }
