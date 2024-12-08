@@ -1,5 +1,7 @@
-import "dotenv/config";
-import { Client, GatewayIntentBits } from "discord.js";
+require('dotenv/config');
+const fs = require('fs');
+const path = require('path');
+const { Client, GatewayIntentBits } = require('discord.js');
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -20,28 +22,29 @@ client.on("interactionCreate", async (interaction) => {
   }
 });
 
+// Load all commands from the commands directory
+const commands = [];
+const commandsPath = path.join(__dirname, "command");
+const commandFiles = fs.readdirSync(commandsPath).filter((file) => file.endsWith(".js"));
+
+for (const file of commandFiles) {
+  const command = require(path.join(commandsPath, file));
+  commands.push(command);
+}
+
+
+
 client.on("messageCreate", async (message) => {
   // Check if the message is from a bot or doesn't start with "?"
-  console.log(message);
-
-  if (message.author.bot || !message.content.startsWith('?')) return;
+  if (message.author.bot || !message.content.startsWith("?")) return;
 
   // Extract the command from the message
-  const command = message.content.slice(1).trim().toLowerCase(); // Remove the "?" and trim spaces
+  const commandName = message.content.slice(1).trim().toLowerCase();
 
-  // Handle the "?sui" command
-  if (command === "sui") {
-    await message.channel.send("Sui!");
-  }
-
-  if (command === "skibidi") {
-    await message.channel.send("Skibidi Sigma");
-  }
-
-  if (command === "avatar") {
-    const user = message.mentions.users.first() || message.author;
-    const avatar = user.displayAvatarURL({ dynamic: true, size: 4096 });
-    await message.channel.send(avatar);
+  // Find and execute the command
+  const command = commands.find((cmd) => cmd.data.name === commandName);
+  if (command) {
+    await command.execute(message);
   }
 });
 
