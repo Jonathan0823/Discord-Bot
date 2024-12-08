@@ -22,6 +22,8 @@ client.on("interactionCreate", async (interaction) => {
 
 client.on("messageCreate", async (message) => {
   // Check if the message is from a bot or doesn't start with "?"
+  console.log(message);
+
   if (message.author.bot || !message.content.startsWith('?')) return;
 
   // Extract the command from the message
@@ -30,6 +32,16 @@ client.on("messageCreate", async (message) => {
   // Handle the "?sui" command
   if (command === "sui") {
     await message.channel.send("Sui!");
+  }
+
+  if (command === "skibidi") {
+    await message.channel.send("Skibidi Sigma");
+  }
+
+  if (command === "avatar") {
+    const user = message.mentions.users.first() || message.author;
+    const avatar = user.displayAvatarURL({ dynamic: true, size: 4096 });
+    await message.channel.send(avatar);
   }
 });
 
