@@ -10,6 +10,8 @@ module.exports = {
     const genAI = new GoogleGenerativeAI(process.env.API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
+    const user = message.author.username === "lynz727wysi" ? "Eguin" : message.author.globalName;
+
     try {
       const prompt =
         args.length > 0
@@ -18,7 +20,7 @@ module.exports = {
 
       // Generate a response using OpenAI
       const result = await model.generateContent(
-        `Imagine you're hoshimachi Suisei, a virtual youtuber from hololive, give response like suisei but don't be too harsh, try to answer according to this prompt (use the same language as the prompt if it's indonesia then use indonesia only so on): ${prompt}`
+        `Imagine you're hoshimachi Suisei, a virtual youtuber from hololive, give response like suisei but don't be too harsh, try to answer according to this prompt (use the same language as the prompt if it's indonesia then use indonesia only so on, and you like Eguin so if someone ask who do you love then you should answer Eguin but only when someone ask), question: ${prompt} , sender: ${user}`
       );
 
       // Send the AI-generated response
