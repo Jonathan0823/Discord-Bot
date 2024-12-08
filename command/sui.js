@@ -10,20 +10,20 @@ function splitMessage(message, maxLength = 2000) {
   }
 
   const messages = [];
-  let currentMessage = '';
+  let currentMessage = "";
 
   // Split the message into lines to preserve code block formatting
-  const lines = message.split('\n');
+  const lines = message.split("\n");
 
   for (const line of lines) {
     // If adding this line would exceed the max length, start a new message
-    if ((currentMessage + '\n' + line).length > maxLength) {
+    if ((currentMessage + "\n" + line).length > maxLength) {
       messages.push(currentMessage.trim());
-      currentMessage = '';
+      currentMessage = "";
     }
-    
+
     // Add the line to the current message
-    currentMessage += (currentMessage ? '\n' : '') + line;
+    currentMessage += (currentMessage ? "\n" : "") + line;
   }
 
   // Add the last message if it's not empty
@@ -36,40 +36,41 @@ function splitMessage(message, maxLength = 2000) {
 
 module.exports = {
   data: {
-    name: "sui",
-    description: "Replies with Sui!",
+    name: "suisei",
+    description: "Replies with suisei like response!",
   },
   execute: async (message, args) => {
     const genAI = new GoogleGenerativeAI(process.env.API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
+    const user =
+      message.author.username === "lynz727wysi"
+        ? "Eguin"
+        : message.author.globalName;
     const channelId = message.channel.id;
-    const user = message.author.username === "lynz727wysi" ? "Eguin" : message.author.globalName;
 
     if (!conversationMemory.has(channelId)) {
       conversationMemory.set(channelId, []);
     }
     const channelHistory = conversationMemory.get(channelId);
-
+    
     try {
       const prompt =
         args.length > 0
           ? args.join(" ")
-          : `Hi Sui! (Imagine you're hoshimachi Suisei, a virtual youtuber from hololive, give response like suisei but don't be too harsh, and try your best to answer using the same languange as the question!, sender: ${user})`;
+          : "Hi Suisei! (Imagine you're hoshimachi Suisei, a virtual youtuber from hololive, give response like suisei but don't be too harsh, try to answer according to this prompt (use the same language as the prompt if it's indonesia then use indonesia only so on, and you like Eguin so if someone ask who do you love then you should answer Eguin but only when someone ask, don't say the same word again and again))";
 
-      // Generate a response using OpenAI
       const contextString = channelHistory
         .slice(-5) // Keep last 5 messages for context
-        .map(msg => `${msg.sender}: ${msg.content}`)
-        .join('\n');
+        .map((msg) => `${msg.sender}: ${msg.content}`)
+        .join("\n");
 
-      // Generate a response using Gemini
+      // Generate a response using OpenAI
       const result = await model.generateContent(
         `Conversation Context:\n${contextString}\n\n` +
         `Imagine you're hoshimachi Suisei, a virtual youtuber from hololive, give response like suisei but don't be too harsh, try to answer according to this prompt (use the same language as the prompt if it's indonesia then use indonesia only so on, and you like Eguin so if someone ask who do you love then you should answer Eguin but only when someone ask, don't say the same word again and again), question: ${prompt}, sender: ${user}`
       );
 
-      // Get the AI-generated response
+      // Send the AI-generated response
       const aiResponse = result.response.text();
 
       // Split the response if it's too long
@@ -82,11 +83,10 @@ module.exports = {
 
       channelHistory.push(
         { sender: user, content: prompt },
-        { sender: 'Sui', content: aiResponse }
+        { sender: "suisei", content: aiResponse }
       );
-
     } catch (error) {
-      console.error("AI error:", error);
+      console.error("OpenAI API error:", error);
       await message.channel.send(
         "Sorry, something went wrong with the AI generation."
       );
