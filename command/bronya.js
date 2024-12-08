@@ -10,20 +10,20 @@ function splitMessage(message, maxLength = 2000) {
   }
 
   const messages = [];
-  let currentMessage = '';
+  let currentMessage = "";
 
   // Split the message into lines to preserve code block formatting
-  const lines = message.split('\n');
+  const lines = message.split("\n");
 
   for (const line of lines) {
     // If adding this line would exceed the max length, start a new message
-    if ((currentMessage + '\n' + line).length > maxLength) {
+    if ((currentMessage + "\n" + line).length > maxLength) {
       messages.push(currentMessage.trim());
-      currentMessage = '';
+      currentMessage = "";
     }
-    
+
     // Add the line to the current message
-    currentMessage += (currentMessage ? '\n' : '') + line;
+    currentMessage += (currentMessage ? "\n" : "") + line;
   }
 
   // Add the last message if it's not empty
@@ -34,7 +34,6 @@ function splitMessage(message, maxLength = 2000) {
   return messages;
 }
 
-
 module.exports = {
   data: {
     name: "bronya",
@@ -43,7 +42,12 @@ module.exports = {
   execute: async (message, args) => {
     const genAI = new GoogleGenerativeAI(process.env.API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-    const user = message.author.username === "lynz727wysi" ? "Eguin" : message.author.username === "zerojuice" ? "Eric":  message.author.globalName;
+    const user =
+      message.author.username === "lynz727wysi"
+        ? "Eguin"
+        : message.author.username === "zerojuice"
+        ? "Eric"
+        : message.author.globalName;
     const channelId = message.channel.id;
 
     if (!conversationMemory.has(channelId)) {
@@ -51,17 +55,21 @@ module.exports = {
     }
     const channelHistory = conversationMemory.get(channelId);
 
-
     try {
       const prompt =
         args.length > 0
           ? args.join(" ")
           : "Hi Bronya! (Bayangkan kamu adalah bronya dari honkai impact/ star rail dan kamu harus menjawab dengan seperti bronya sungguhan tapi jangan terlalu berlebihan ya)";
 
+      const contextString = channelHistory
+        .slice(-5) // Keep last 5 messages for context
+        .map((msg) => `${msg.sender}: ${msg.content}`)
+        .join("\n");
+
       // Generate a response using OpenAI
       const result = await model.generateContent(
         `Conversation Context:\n${contextString}\n\n` +
-        `Bayangkan kamu adalah bronya dari honkai impact/ star rail dan kamu harus menjawab dengan seperti bronya sungguhan tapi jangan terlalu berlebihan ya: question: "${prompt}, sender: ${user}"`
+          `Bayangkan kamu adalah bronya dari honkai impact/ star rail dan kamu harus menjawab dengan seperti bronya sungguhan tapi jangan terlalu berlebihan ya: question: "${prompt}, sender: ${user}"`
       );
 
       // Send the AI-generated response
