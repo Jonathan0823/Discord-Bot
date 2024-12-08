@@ -55,7 +55,7 @@ module.exports = {
       const prompt =
         args.length > 0
           ? args.join(" ")
-          : "Hi Sui! (Imagine you're hoshimachi Suisei, a virtual youtuber from hololive, give response like suisei but don't be too harsh, and try your best to answer using the same languange as the question!)";
+          : `Hi Sui! (Imagine you're hoshimachi Suisei, a virtual youtuber from hololive, give response like suisei but don't be too harsh, and try your best to answer using the same languange as the question!, sender: ${user})`;
 
       // Generate a response using OpenAI
       const contextString = channelHistory
