@@ -4,21 +4,26 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 const conversationMemory = new Map();
 
 function splitMessage(message, maxLength = 2000) {
+  // If the message is already short enough, return it as-is
+  if (message.length <= maxLength) {
+    return [message];
+  }
+
   const messages = [];
-  let currentMessage = "";
+  let currentMessage = '';
 
-  // Split the message into words
-  const words = message.split(/\s+/);
+  // Split the message into lines to preserve code block formatting
+  const lines = message.split('\n');
 
-  for (const word of words) {
-    // If adding this word would exceed the max length, start a new message
-    if ((currentMessage + " " + word).length > maxLength) {
+  for (const line of lines) {
+    // If adding this line would exceed the max length, start a new message
+    if ((currentMessage + '\n' + line).length > maxLength) {
       messages.push(currentMessage.trim());
-      currentMessage = "";
+      currentMessage = '';
     }
-
-    // Add the word to the current message
-    currentMessage += (currentMessage ? " " : "") + word;
+    
+    // Add the line to the current message
+    currentMessage += (currentMessage ? '\n' : '') + line;
   }
 
   // Add the last message if it's not empty
@@ -39,10 +44,7 @@ module.exports = {
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const channelId = message.channel.id;
-    const user =
-      message.author.username === "lynz727wysi"
-        ? "Eguin"
-        : message.author.globalName;
+    const user = message.author.username === "lynz727wysi" ? "Eguin" : message.author.globalName;
 
     if (!conversationMemory.has(channelId)) {
       conversationMemory.set(channelId, []);
@@ -58,27 +60,31 @@ module.exports = {
       // Generate a response using OpenAI
       const contextString = channelHistory
         .slice(-5) // Keep last 5 messages for context
-        .map((msg) => `${msg.sender}: ${msg.content}`)
-        .join("\n");
+        .map(msg => `${msg.sender}: ${msg.content}`)
+        .join('\n');
 
       // Generate a response using Gemini
       const result = await model.generateContent(
         `Conversation Context:\n${contextString}\n\n` +
-          `Imagine you're hoshimachi Suisei, a virtual youtuber from hololive, give response like suisei but don't be too harsh, try to answer according to this prompt (use the same language as the prompt if it's indonesia then use indonesia only so on, and you like Eguin so if someone ask who do you love then you should answer Eguin but only when someone ask), question: ${prompt}, sender: ${user}`
+        `Imagine you're hoshimachi Suisei, a virtual youtuber from hololive, give response like suisei but don't be too harsh, try to answer according to this prompt (use the same language as the prompt if it's indonesia then use indonesia only so on, and you like Eguin so if someone ask who do you love then you should answer Eguin but only when someone ask), question: ${prompt}, sender: ${user}`
       );
 
-      // Send the AI-generated response
+      // Get the AI-generated response
       const aiResponse = result.response.text();
+
+      // Split the response if it's too long
       const responseParts = splitMessage(aiResponse);
 
+      // Send each part of the response
       for (const part of responseParts) {
         await message.channel.send(part);
       }
 
       channelHistory.push(
         { sender: user, content: prompt },
-        { sender: "Sui", content: aiResponse }
+        { sender: 'Sui', content: aiResponse }
       );
+
     } catch (error) {
       console.error("AI error:", error);
       await message.channel.send(
