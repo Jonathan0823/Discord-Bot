@@ -3,7 +3,7 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 module.exports = {
   data: {
-    name: "robin",
+    name: "bronya",
     description: "Replies with robin like response!",
   },
   execute: async (message, args) => {
