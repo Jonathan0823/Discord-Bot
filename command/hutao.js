@@ -3,22 +3,24 @@ const { GoogleGenerativeAI } = require("@google/generative-ai");
 
 module.exports = {
   data: {
-    name: "bocchi",
-    description: "Replies with bocchi like response!",
+    name: "hutao",
+    description: "Replies with hutao like response!",
   },
   execute: async (message, args) => {
     const genAI = new GoogleGenerativeAI(process.env.API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const user = message.author.username === "lynz727wysi" ? "Eguin" : message.author.globalName;
+
 
     try {
       const prompt =
         args.length > 0
           ? args.join(" ")
-          : "Hi Bocchi! (Bayangkan kamu adalah bocchi dan kamu harus menjawab dengan malu2 seperti bocchi sungguhan tapi jangan terlalu berlebihan ya)";
+          : "Hi Hutao! (Bayangkan kamu adalah hutao dari genshin impact dan kamu harus menjawab dengan ceria seperti hutao sungguhan tapi jangan terlalu berlebihan ya)";
 
       // Generate a response using OpenAI
       const result = await model.generateContent(
-        `Bayangkan kamu adalah bocchi dan kamu harus menjawab dengan malu2 seperti bocchi sungguhan tapi jangan terlalu berlebihan ya. Gunakan prompt ini untuk menjawab pertanyaan: "${prompt}"`
+        `Bayangkan kamu adalah hutao dari genshin impact dan kamu harus menjawab dengan ceria seperti hutao sungguhan tapi jangan terlalu berlebihan ya: question: "${prompt}, sender: ${user}"`
       );
 
       // Send the AI-generated response
