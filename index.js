@@ -1,7 +1,13 @@
 require("dotenv/config");
 const fs = require("fs");
 const path = require("path");
-const { Client, GatewayIntentBits, REST, Routes } = require("discord.js");
+const {
+  Client,
+  GatewayIntentBits,
+  REST,
+  Routes,
+  ActivityType,
+} = require("discord.js");
 const { type } = require("os");
 const client = new Client({
   intents: [
@@ -15,7 +21,7 @@ client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
 
   client.user.setPresence({
-    activities: [{ name: "to Starry Jet", type: "LISTENING" }],
+    activities: [{ name: "to Starry Jet", type: ActivityType.Listening }],
     status: "online", // Set status to online, idle, or dnd
   });
 });
@@ -70,7 +76,11 @@ const executeCommand = async (interaction, isSlash = true) => {
     // For message commands
     if (!isSlash) {
       // Strict checks
-      if (!interaction.content || interaction.author.bot || !interaction.content.startsWith("?")) {
+      if (
+        !interaction.content ||
+        interaction.author.bot ||
+        !interaction.content.startsWith("?")
+      ) {
         return false;
       }
 
@@ -90,10 +100,12 @@ const executeCommand = async (interaction, isSlash = true) => {
           return true;
         } catch (error) {
           console.error(`Error in message command ${commandName}:`, error);
-          
+
           // Only reply if not already replied
           if (!interaction.replied && !interaction.deferred) {
-            await interaction.reply("There was an error executing that command!");
+            await interaction.reply(
+              "There was an error executing that command!"
+            );
           }
           return true;
         }
@@ -111,8 +123,11 @@ const executeCommand = async (interaction, isSlash = true) => {
           await command.execute(interaction);
           return true;
         } catch (error) {
-          console.error(`Error in slash command ${interaction.commandName}:`, error);
-          
+          console.error(
+            `Error in slash command ${interaction.commandName}:`,
+            error
+          );
+
           if (!interaction.replied && !interaction.deferred) {
             await interaction.reply({
               content: "There was an error executing this command!",
@@ -140,7 +155,7 @@ client.on("messageCreate", async (message) => {
 client.on("interactionCreate", async (interaction) => {
   // Only handle slash commands
   if (!interaction.isCommand()) return;
-  
+
   console.log("InteractionCreate Event - Processing Slash Command");
   await executeCommand(interaction, true);
 });
