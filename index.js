@@ -49,7 +49,6 @@ const rest = new REST({ version: "10" }).setToken(
   try {
     console.log("Started refreshing application (/) commands.");
 
-    // Ganti 'YOUR_GUILD_ID' dengan ID server jika ingin hanya di satu server
     await rest.put(Routes.applicationCommands(process.env.DISCORD_APP_ID), {
       body: slashCommands,
     });

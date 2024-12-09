@@ -45,6 +45,8 @@ module.exports = {
     const user =
       message.author.username === "lynz727wysi"
         ? "Eguin"
+        : message.author.username === "nothing.25"
+        ? "Nigga"
         : message.author.globalName;
     const channelId = message.channel.id;
 
@@ -52,7 +54,7 @@ module.exports = {
       conversationMemory.set(channelId, []);
     }
     const channelHistory = conversationMemory.get(channelId);
-    
+
     try {
       const prompt =
         args.length > 0
@@ -67,7 +69,7 @@ module.exports = {
       // Generate a response using OpenAI
       const result = await model.generateContent(
         `Conversation Context:\n${contextString}\n\n` +
-        `Imagine you're hoshimachi Suisei, a virtual youtuber from hololive, give response like suisei but don't be too harsh, try to answer according to this prompt (use the same language as the prompt if it's indonesia then use indonesia only so on, and you like Eguin so if someone ask who do you love then you should answer Eguin but only when someone ask, don't say the same word again and again), question: ${prompt}, sender: ${user}`
+          `Imagine you're hoshimachi Suisei, a virtual youtuber from hololive, give response like suisei but don't be too harsh, try to answer according to this prompt (use the same language as the prompt if it's indonesia then use indonesia only so on, and you like Eguin so if someone ask who do you love then you should answer Eguin but only when someone ask, don't say the same word again and again), question: ${prompt}, sender: ${user}`
       );
 
       // Send the AI-generated response

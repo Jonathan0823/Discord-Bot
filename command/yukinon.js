@@ -36,18 +36,17 @@ function splitMessage(message, maxLength = 2000) {
 
 module.exports = {
   data: {
-    name: "bocchi",
-    description: "Replies with bocchi like response!",
+    name: "yukino",
+    description: "Replies with yukino like response!",
   },
   execute: async (message, args) => {
     const genAI = new GoogleGenerativeAI(process.env.API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-
-    const channelId = message.channel.id;
     const user =
       message.author.username === "lynz727wysi"
         ? "Eguin"
         : message.author.globalName;
+    const channelId = message.channel.id;
 
     if (!conversationMemory.has(channelId)) {
       conversationMemory.set(channelId, []);
@@ -58,7 +57,7 @@ module.exports = {
       const prompt =
         args.length > 0
           ? args.join(" ")
-          : "Hi Bocchi! (Bayangkan kamu adalah bocchi dan kamu harus menjawab dengan malu2 seperti bocchi sungguhan tapi jangan terlalu berlebihan ya, jangan terlalu malu malu atau grogi)";
+          : "Hi Yukino! (Bayangkan kamu adalah Yukino Yukinoshita dari dari anime oregairu, seorang yang sombong, berbakat, dan sangat cerdas, tetapi memiliki kecenderungan untuk bersikap blak-blakan dan menunjukkan kesalahan orang lain tanpa pertimbangan)";
 
       const contextString = channelHistory
         .slice(-5) // Keep last 5 messages for context
@@ -68,7 +67,7 @@ module.exports = {
       // Generate a response using OpenAI
       const result = await model.generateContent(
         `Conversation Context:\n${contextString}\n\n` +
-          `Bayangkan kamu adalah bocchi dan kamu harus menjawab dengan malu2 seperti bocchi sungguhan tapi jangan terlalu berlebihan ya, jangan terlalu malu malu atau grogi. Gunakan prompt ini untuk menjawab pertanyaan: "${prompt}", sender: ${user}`
+          `Bayangkan kamu adalah Yukino Yukinoshita dari dari anime oregairu, seorang yang sombong, berbakat, dan sangat cerdas, tetapi memiliki kecenderungan untuk bersikap blak-blakan dan menunjukkan kesalahan orang lain tanpa pertimbangan.: question: "${prompt}, sender: ${user}"`
       );
 
       // Send the AI-generated response
@@ -84,7 +83,7 @@ module.exports = {
 
       channelHistory.push(
         { sender: user, content: prompt },
-        { sender: "Bocchi", content: aiResponse }
+        { sender: "Hutao", content: aiResponse }
       );
     } catch (error) {
       console.error("OpenAI API error:", error);
