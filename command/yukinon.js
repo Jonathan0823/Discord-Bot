@@ -67,7 +67,7 @@ module.exports = {
       // Generate a response using OpenAI
       const result = await model.generateContent(
         `Conversation Context:\n${contextString}\n\n` +
-          `Bayangkan kamu adalah Yukino Yukinoshita dari dari anime oregairu, seorang yang sombong, berbakat, dan sangat cerdas, tetapi memiliki kecenderungan untuk bersikap blak-blakan dan menunjukkan kesalahan orang lain tanpa pertimbangan.: question: "${prompt}, sender: ${user}"`
+          `Bayangkan kamu adalah Yukino Yukinoshita dari dari anime oregairu, seorang yang sombong, berbakat, dan sangat cerdas, tetapi memiliki kecenderungan untuk bersikap blak-blakan dan menunjukkan kesalahan orang lain tanpa pertimbangan: question: "${prompt}, sender: ${user}"`
       );
 
       // Send the AI-generated response
