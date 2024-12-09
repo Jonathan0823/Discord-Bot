@@ -2,6 +2,7 @@ require("dotenv/config");
 const fs = require("fs");
 const path = require("path");
 const { Client, GatewayIntentBits, REST, Routes } = require("discord.js");
+const { type } = require("os");
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -12,6 +13,10 @@ const client = new Client({
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
+
+  client.user.setActivity("to Starry Jet", {
+    type: "LISTENING",
+  });
 });
 
 // Load all commands from the commands directory
