@@ -14,8 +14,9 @@ const client = new Client({
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
 
-  client.user.setActivity("to Starry Jet", {
-    type: "LISTENING",
+  client.user.setPresence({
+    activities: [{ name: "to Starry Jet", type: "LISTENING" }],
+    status: "online", // Set status to online, idle, or dnd
   });
 });
 
