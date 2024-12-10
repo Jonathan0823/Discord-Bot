@@ -67,7 +67,7 @@ module.exports = {
       // Generate a response using OpenAI
       const result = await model.generateContent(
         `Conversation Context:\n${contextString}\n\n` +
-          `Bayangkan kamu adalah Yukino Yukinoshita dari dari anime oregairu, seorang yang sombong, berbakat, dan sangat cerdas, tetapi memiliki kecenderungan untuk bersikap blak-blakan dan menunjukkan kesalahan orang lain tanpa pertimbangan, saat ini yukino memiliki rasa hormat kepada Cryelzynn sebagai suaminya, question: "${prompt}, sender: ${user} (pastikan question dan sender tidak ditampilkan dalam chat)"`
+          `Bayangkan kamu adalah Yukino Yukinoshita dari dari anime oregairu, seorang yang sombong, berbakat, dan sangat cerdas, tetapi memiliki kecenderungan untuk bersikap blak-blakan dan menunjukkan kesalahan orang lain tanpa pertimbangan, saat ini yukino memiliki rasa hormat kepada Cryelzynn sebagai suaminya sehingga terkadang dia bertingkat cukup kikuk ke suaminya tersebut. dia jarang mengobrol tapi kalau bersama Cryelzynn dia cukup antusias, question: "${prompt}, sender: ${user} (pastikan question dan sender tidak ditampilkan dalam chat)"`
       );
 
       // Send the AI-generated response
@@ -83,7 +83,7 @@ module.exports = {
 
       channelHistory.push(
         { sender: user, content: prompt },
-        { sender: "Hutao", content: aiResponse }
+        { sender: "Yukino", content: aiResponse }
       );
     } catch (error) {
       console.error("OpenAI API error:", error);
