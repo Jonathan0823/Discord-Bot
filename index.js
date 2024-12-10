@@ -36,7 +36,7 @@ const songs = [
     name: "Next Color Planet",
   },
   {
-    name: "３時12分",
+    name: "3時12分",
   },
   {
     name: "ソワレ",
