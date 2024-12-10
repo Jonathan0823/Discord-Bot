@@ -36,8 +36,8 @@ function splitMessage(message, maxLength = 2000) {
 
 module.exports = {
   data: {
-    name: "ui",
-    description: "Replies with Shigure Ui (9 years) like response!",
+    name: "cam",
+    description: "Replies with camellya like response!",
   },
   execute: async (message, args) => {
     const genAI = new GoogleGenerativeAI(process.env.API_KEY);
@@ -83,7 +83,7 @@ module.exports = {
 
       channelHistory.push(
         { sender: user, content: prompt },
-        { sender: "Ui", content: aiResponse }
+        { sender: "Camellya", content: aiResponse }
       );
     } catch (error) {
       console.error("OpenAI API error:", error);
