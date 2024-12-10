@@ -36,7 +36,7 @@ function splitMessage(message, maxLength = 2000) {
 
 module.exports = {
   data: {
-    name: "ui",
+    name: "ui9",
     description: "Replies with Shigure Ui (9 years) like response!",
   },
   execute: async (message, args) => {
