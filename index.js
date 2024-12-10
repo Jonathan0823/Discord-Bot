@@ -43,7 +43,7 @@ client.on("ready", () => {
   setInterval(() => {
     const randomSong = songs[Math.floor(Math.random() * songs.length)];
     client.user.setActivity(randomSong.name, {
-      type: ActivityType.LISTENING,
+      type: ActivityType.Listening,
     });
   }, 1000 * 60);
 });
