@@ -36,7 +36,7 @@ function splitMessage(message, maxLength = 2000) {
 
 module.exports = {
   data: {
-    name: "yukino",
+    name: "yukinon",
     description: "Replies with yukino like response!",
   },
   execute: async (message, args) => {
