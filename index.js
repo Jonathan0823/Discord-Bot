@@ -30,10 +30,37 @@ const songs = [
     name: "Bluerose",
   },
   {
-    name: "Debutante Ball",
+    name: "デビュタントボール",
   },
   {
     name: "Next Color Planet",
+  },
+  {
+    name: "３時12分",
+  },
+  {
+    name: "ソワレ",
+  },
+  {
+    name: "Awake",
+  },
+  {
+    name: "ムーンライト",
+  },
+  {
+    name: "みちづれ",
+  },
+  {
+    name: "Comet",
+  },
+  {
+    name: "Andromeda",
+  },
+  {
+    name: "Newton",
+  },
+  {
+    name: "流星群",
   },
 ];
 
