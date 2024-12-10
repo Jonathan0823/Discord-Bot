@@ -8,7 +8,6 @@ const {
   Routes,
   ActivityType,
 } = require("discord.js");
-const { type } = require("os");
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
