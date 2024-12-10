@@ -17,13 +17,36 @@ const client = new Client({
   ],
 });
 
+const songs = [
+  {
+    name: "Starry Jet",
+  },
+  {
+    name: "Ghost",
+  },
+  {
+    name: "Stellar Stellar",
+  },
+  {
+    name: "Bluerose",
+  },
+  {
+    name: "Debutante Ball",
+  },
+  {
+    name: "Next Color Planet",
+  },
+];
+
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
 
-  client.user.setPresence({
-    activities: [{ name: "to Starry Jet", type: ActivityType.Listening }],
-    status: "online", // Set status to online, idle, or dnd
-  });
+  setInterval(() => {
+    const randomSong = songs[Math.floor(Math.random() * songs.length)];
+    client.user.setActivity(randomSong.name, {
+      type: ActivityType.LISTENING,
+    });
+  }, 1000 * 60);
 });
 
 // Load all commands from the commands directory
