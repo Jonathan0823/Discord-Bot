@@ -124,6 +124,16 @@ const executeCommand = async (interaction, isSlash = true) => {
   try {
     // For message commands
     if (!isSlash) {
+
+      if (
+        interaction.content && 
+        !interaction.author.bot && 
+        interaction.content.toLowerCase() === "nigger"
+      ) {
+        await interaction.channel.send("Fakyumanigger");
+        return true;
+      }
+
       // Strict checks
       if (
         !interaction.content ||
