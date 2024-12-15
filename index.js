@@ -15,6 +15,7 @@ const client = new Client({
     GatewayIntentBits.MessageContent,
   ],
 });
+const { setupDailyAlarm } = require("./alarm");
 
 const songs = [
   {
@@ -66,6 +67,9 @@ const songs = [
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
+
+  const targetChannelId = process.env.TARGET_CHANNEL_ID; // Store the target channel ID in .env
+  setupDailyAlarm(client, targetChannelId);
 
   setInterval(() => {
     const randomSong = songs[Math.floor(Math.random() * songs.length)];
