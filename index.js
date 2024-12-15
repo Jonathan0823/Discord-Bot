@@ -15,7 +15,7 @@ const client = new Client({
     GatewayIntentBits.MessageContent,
   ],
 });
-const { setupDailyAlarm } = require("./alarm");
+const { setupDailyAlarm } = require("./utils/alarm");
 
 const songs = [
   {
