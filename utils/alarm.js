@@ -1,3 +1,5 @@
+const { EmbedBuilder } = require('discord.js');
+
 // alarm.js
 function calculateTimeUntilNext6AM() {
   const now = new Date();
