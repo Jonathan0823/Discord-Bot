@@ -15,7 +15,7 @@ const client = new Client({
     GatewayIntentBits.MessageContent,
   ],
 });
-const { setupDailyAlarm } = require("./utils/alarm");
+const { setupDailyAlarm, triggerAlarm } = require("./utils/alarm");
 const { songs } = require("./songlist");
 
 client.on("ready", () => {
@@ -158,6 +158,11 @@ const executeCommand = async (interaction, isSlash = true) => {
 };
 
 client.on("messageCreate", async (message) => {
+  if (message.content === "!testalarm") {
+    const targetChannelId = process.env.TARGET_CHANNEL_ID; // Store the target channel ID in .env
+    triggerAlarm(message.client, targetChannelId);
+    message.reply("Alarm triggered for testing!");
+  }
   await executeCommand(message, false);
 });
 

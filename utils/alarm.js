@@ -53,4 +53,5 @@ z  } else {
 
 module.exports = {
   setupDailyAlarm,
+  triggerAlarm
 };
