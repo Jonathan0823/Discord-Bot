@@ -40,10 +40,10 @@ function triggerAlarm(client, channelId) {
       .setThumbnail(
         "https://play-lh.googleusercontent.com/azVwh1OazZcsq6ocxOzH4mccFgs3IP0-RTxlFsoIumIO28RbmNx2YP7PEsqNAyY0ck0=w240-h480-rw"
       )
-      .setFooter("Hari ini semangat ya! 💪")
       .setImage(
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCLqlemXM4g15lAmQK4Fq-CML4MhsBh8fQDw&s"
-      );
+      )
+      .setFooter({ text: "Hari ini semangat ya! 💪" })
 
     channel.send({ embeds: [embed], components: [row] });
 z  } else {
