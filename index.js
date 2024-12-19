@@ -16,54 +16,7 @@ const client = new Client({
   ],
 });
 const { setupDailyAlarm } = require("./utils/alarm");
-
-const songs = [
-  {
-    name: "Starry Jet",
-  },
-  {
-    name: "Ghost",
-  },
-  {
-    name: "Stellar Stellar",
-  },
-  {
-    name: "Bluerose",
-  },
-  {
-    name: "デビュタントボール",
-  },
-  {
-    name: "Next Color Planet",
-  },
-  {
-    name: "3時12分",
-  },
-  {
-    name: "ソワレ",
-  },
-  {
-    name: "Awake",
-  },
-  {
-    name: "ムーンライト",
-  },
-  {
-    name: "みちづれ",
-  },
-  {
-    name: "Comet",
-  },
-  {
-    name: "Andromeda",
-  },
-  {
-    name: "Newton",
-  },
-  {
-    name: "流星群",
-  },
-];
+const { songs } = require("./songlist");
 
 client.on("ready", () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -96,7 +49,7 @@ const slashFiles = fs
 for (const file of commandFiles) {
   const command = require(path.join(commandsPath, file));
   commands.push(command);
-  commandMap.set(command.data.name, command); 
+  commandMap.set(command.data.name, command);
 }
 
 for (const file of slashFiles) {
@@ -127,10 +80,9 @@ const executeCommand = async (interaction, isSlash = true) => {
   try {
     // For message commands
     if (!isSlash) {
-
       if (
-        interaction.content && 
-        !interaction.author.bot && 
+        interaction.content &&
+        !interaction.author.bot &&
         interaction.content.toLowerCase() === "nigger"
       ) {
         await interaction.channel.send("Fakyumanigger");
