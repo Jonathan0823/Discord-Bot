@@ -1,52 +1,24 @@
 const songs = [
-  {
-    name: "Starry Jet",
-  },
-  {
-    name: "Ghost",
-  },
-  {
-    name: "Stellar Stellar",
-  },
-  {
-    name: "Bluerose",
-  },
-  {
-    name: "デビュタントボール",
-  },
-  {
-    name: "Next Color Planet",
-  },
-  {
-    name: "3時12分",
-  },
-  {
-    name: "ソワレ",
-  },
-  {
-    name: "Awake",
-  },
-  {
-    name: "ムーンライト",
-  },
-  {
-    name: "みちづれ",
-  },
-  {
-    name: "Comet",
-  },
-  {
-    name: "Andromeda",
-  },
-  {
-    name: "Newton",
-  },
-  {
-    name: "流星群",
-  },
-  {
-    name: "綺麗事",
-  },
+  "Starry Jet",
+  "Ghost",
+  "Stellar Stellar",
+  "Bluerose",
+  "デビュタントボール",
+  "Next Color Planet",
+  "3時12分",
+  "ソワレ",
+  "Awake",
+  "ムーンライト",
+  "みちづれ",
+  "Comet",
+  "Andromeda",
+  "Newton",
+  "流星群",
+  "綺麗事",
+  "Light the Light",
+  "ビビデバ",
+  "Midnight Mission",
+  "Damn Good Day",
 ];
 
 module.exports = {
