@@ -43,15 +43,15 @@ function triggerAlarm(client, channelId) {
       .setImage(
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCLqlemXM4g15lAmQK4Fq-CML4MhsBh8fQDw&s"
       )
-      .setFooter({ text: "Hari ini semangat ya! 💪" })
+      .setFooter({ text: "Hari ini semangat ya! 💪" });
 
     channel.send({ embeds: [embed], components: [row] });
-z  } else {
+  } else {
     console.error(`Channel with ID ${channelId} not found.`);
   }
 }
 
 module.exports = {
   setupDailyAlarm,
-  triggerAlarm
+  triggerAlarm,
 };
