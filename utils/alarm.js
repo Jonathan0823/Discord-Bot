@@ -8,7 +8,7 @@ const cron = require("node-cron");
 
 function setupDailyAlarm(client, channelId) {
   cron.schedule(
-    "0 6 * * *",
+    "0 11 * * *",
     () => {
       triggerAlarm(client, channelId);
     },
