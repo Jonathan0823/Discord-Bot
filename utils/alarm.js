@@ -1,12 +1,13 @@
 const { EmbedBuilder } = require("discord.js");
-const CronJob = require("node-cron");
+const cron = require("node-cron");
 
 
 function setupDailyAlarm(client, channelId) {
-  const job = new CronJob("0 8 * * *", () => {
+  cron.schedule("0 8 * * *", () => {
     triggerAlarm(client, channelId);
-  }, null, true, "Asia/Jakarta");
-  job.start();
+  }, {
+    timezone: "Asia/Jakarta",
+  });
 }
 
 function triggerAlarm(client, channelId) {
