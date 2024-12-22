@@ -1,4 +1,4 @@
-const { MessageEmbed } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 module.exports = {
   data: {
@@ -9,10 +9,10 @@ module.exports = {
     const user = message.mentions.users.first() || message.author;
     const avatar = user.displayAvatarURL({ dynamic: true, size: 4096 });
     
-    const embed = new MessageEmbed()
-    .setTitle(`${user.username}'s Avatar`)
-    .setImage(avatar)
-    .setColor('#00FF00');
+    const embed = new EmbedBuilder()
+      .setTitle(`${user.username}'s Avatar`)
+      .setImage(avatar)
+      .setColor('#00FF00');
 
     await message.channel.send({ embeds: [embed] });
   },
