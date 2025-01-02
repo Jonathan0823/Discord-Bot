@@ -24,19 +24,7 @@ client.on("ready", async () => {
     process.env.TARGET_CHANNEL_ID2,
   ];
   
-  for (const channelId of targetChannelId) {
-    const channel = await client.channels.fetch(channelId).catch((error) => {
-      console.error(`Failed to fetch channel ${channelId}:`, error);
-      return null;
-    });
-
-    if (!channel) {
-      console.warn(`Skipping alarm setup for invalid or inaccessible channel: ${channelId}`);
-      continue;
-    }
-    
-    setupDailyAlarm(client, channelId);
-  }
+  setupDailyAlarm(client, targetChannelId);
 
   client.user.setActivity("スイちゃんのメンテナンスソング", {
     type: ActivityType.Listening,
