@@ -33,6 +33,7 @@ async function triggerAlarm(client, channelId) {
   while (attempts < maxRetries && !success) {
     try {
       const button1 = new ButtonBuilder()
+        .setEmoji("<:genshinimpact:1324355501466849331> ")
         .setLabel("GI ")
         .setStyle(ButtonStyle.Link)
         .setURL(
@@ -40,6 +41,7 @@ async function triggerAlarm(client, channelId) {
         );
 
       const button2 = new ButtonBuilder()
+        .setEmoji("<:hsr:1324355673567395921> ")
         .setLabel("HSR")
         .setStyle(ButtonStyle.Link)
         .setURL(
@@ -47,13 +49,18 @@ async function triggerAlarm(client, channelId) {
         );
 
       const button3 = new ButtonBuilder()
+        .setEmoji("<:zenless:1324356078825377932> ")
         .setLabel("ZZZ")
         .setStyle(ButtonStyle.Link)
         .setURL(
           "https://act.hoyolab.com/bbs/event/signin/zzz/e202406031448091.html?act_id=e202406031448091&bbs_auth_required=true&bbs_presentation_style=fullscreen&lang=en-us&utm_source=share&utm_medium=link&utm_campaign=web"
         );
 
-      const row = new ActionRowBuilder().addComponents(button1, button2, button3);
+      const row = new ActionRowBuilder().addComponents(
+        button1,
+        button2,
+        button3
+      );
 
       const embed = new EmbedBuilder()
         .setColor(0xffc0cb)
