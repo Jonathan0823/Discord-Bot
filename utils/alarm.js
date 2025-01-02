@@ -60,13 +60,13 @@ async function triggerAlarm(client, channelId) {
       console.log("Alarm sent successfully!");
     } catch (error) {
       attempts++;
-      console.error(
+      console.log(
         `Error sending alarm (attempt ${attempts}/${maxRetries}):`,
         error
       );
 
       if (attempts >= maxRetries) {
-        console.error("Failed to send alarm after maximum retries.");
+        console.log("Failed to send alarm after maximum retries.");
       }
     }
   }
