@@ -19,10 +19,11 @@ const { setupDailyAlarm, triggerAlarm } = require("./utils/alarm");
 const { songs } = require("./songlist");
 
 client.on("ready", () => {
-  console.log(`Logged in as ${client.user.tag}!`);
-
   const targetChannelId = process.env.TARGET_CHANNEL_ID; // Store the target channel ID in .env
   setupDailyAlarm(client, targetChannelId);
+  client.user.setActivity("Starry Jet", { type: ActivityType.Listening });
+  
+  console.log(`Logged in as ${client.user.tag}!`);
 
   setInterval(() => {
     const randomSong = songs[Math.floor(Math.random() * songs.length)];
