@@ -32,14 +32,28 @@ async function triggerAlarm(client, channelId) {
 
   while (attempts < maxRetries && !success) {
     try {
-      const button = new ButtonBuilder()
-        .setLabel("Check-in Hoyolab!")
+      const button1 = new ButtonBuilder()
+        .setLabel("GI")
         .setStyle(ButtonStyle.Link)
         .setURL(
-          "https://act.hoyolab.com/bbs/event/signin/hkrpg/index.html?act_id=e202303301540311&bbs_auth_required=true&bbs_presentation_style=fullscreen&lang=en-us&utm_source=share&utm_medium=link&utm_campaign=web"
+          "https://act.hoyolab.com/ys/event/signin-sea-v3/index.html?act_id=e202102251931481&hyl_auth_required=true&hyl_presentation_style=fullscreen&utm_source=share&utm_medium=link&utm_campaign=web"
         );
 
-      const row = new ActionRowBuilder().addComponents(button);
+      const button2 = new ButtonBuilder()
+        .setLabel("HSR")
+        .setStyle(ButtonStyle.Link)
+        .setURL(
+          "https://act.hoyolab.com/bbs/event/signin/hkrpg/e202303301540311.html?act_id=e202303301540311&bbs_auth_required=true&bbs_presentation_style=fullscreen&lang=en-us&utm_source=share&utm_medium=link&utm_campaign=web"
+        );
+
+      const button3 = new ButtonBuilder()
+        .setLabel("ZZZ")
+        .setStyle(ButtonStyle.Link)
+        .setURL(
+          "https://act.hoyolab.com/bbs/event/signin/zzz/e202406031448091.html?act_id=e202406031448091&bbs_auth_required=true&bbs_presentation_style=fullscreen&lang=en-us&utm_source=share&utm_medium=link&utm_campaign=web"
+        );
+
+      const row = new ActionRowBuilder().addComponents(button1, button2, button3);
 
       const embed = new EmbedBuilder()
         .setColor(0xffc0cb)
