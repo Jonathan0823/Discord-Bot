@@ -18,36 +18,57 @@ function setupDailyAlarm(client, channelId) {
   );
 }
 
-function triggerAlarm(client, channelId) {
+async function triggerAlarm(client, channelId) {
+  const maxRetries = 3;
+  let attempts = 0;
+  let success = false;
+
   const channel = client.channels.cache.get(channelId);
 
-  if (channel) {
-    const button = new ButtonBuilder()
-      .setLabel("Check-in Hoyolab!")
-      .setStyle(ButtonStyle.Link)
-      .setURL(
-        "https://act.hoyolab.com/bbs/event/signin/hkrpg/index.html?act_id=e202303301540311&bbs_auth_required=true&bbs_presentation_style=fullscreen&lang=en-us&utm_source=share&utm_medium=link&utm_campaign=web"
+  if (!channel) {
+    console.error(`Channel with ID ${channelId} not found.`);
+    return;
+  }
+
+  while (attempts < maxRetries && !success) {
+    try {
+      const button = new ButtonBuilder()
+        .setLabel("Check-in Hoyolab!")
+        .setStyle(ButtonStyle.Link)
+        .setURL(
+          "https://act.hoyolab.com/bbs/event/signin/hkrpg/index.html?act_id=e202303301540311&bbs_auth_required=true&bbs_presentation_style=fullscreen&lang=en-us&utm_source=share&utm_medium=link&utm_campaign=web"
+        );
+
+      const row = new ActionRowBuilder().addComponents(button);
+
+      const embed = new EmbedBuilder()
+        .setColor(0xffc0cb)
+        .setTitle("Check In Yuk!")
+        .setDescription(
+          "Pagii!! Jangan lupa sarapan dan check-in Hoyolab kamu ya~ 🍞☕"
+        )
+        .setThumbnail(
+          "https://play-lh.googleusercontent.com/azVwh1OazZcsq6ocxOzH4mccFgs3IP0-RTxlFsoIumIO28RbmNx2YP7PEsqNAyY0ck0=w240-h480-rw"
+        )
+        .setImage(
+          "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCLqlemXM4g15lAmQK4Fq-CML4MhsBh8fQDw&s"
+        )
+        .setFooter({ text: "Hari ini semangat ya! 💪" });
+
+      await channel.send({ embeds: [embed], components: [row] });
+      success = true; // Mark as success if the operation completes without error
+      console.log("Alarm sent successfully!");
+    } catch (error) {
+      attempts++;
+      console.error(
+        `Error sending alarm (attempt ${attempts}/${maxRetries}):`,
+        error
       );
 
-    const row = new ActionRowBuilder().addComponents(button);
-
-    const embed = new EmbedBuilder()
-      .setColor(0xffc0cb)
-      .setTitle("Check In Yuk!")
-      .setDescription(
-        "Pagii!! Jangan lupa sarapan dan check-in Hoyolab kamu ya~ 🍞☕"
-      )
-      .setThumbnail(
-        "https://play-lh.googleusercontent.com/azVwh1OazZcsq6ocxOzH4mccFgs3IP0-RTxlFsoIumIO28RbmNx2YP7PEsqNAyY0ck0=w240-h480-rw"
-      )
-      .setImage(
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRCLqlemXM4g15lAmQK4Fq-CML4MhsBh8fQDw&s"
-      )
-      .setFooter({ text: "Hari ini semangat ya! 💪" });
-
-    channel.send({ embeds: [embed], components: [row] });
-  } else {
-    console.error(`Channel with ID ${channelId} not found.`);
+      if (attempts >= maxRetries) {
+        console.error("Failed to send alarm after maximum retries.");
+      }
+    }
   }
 }
 
