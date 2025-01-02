@@ -21,7 +21,7 @@ const { songs } = require("./songlist");
 client.on("ready", () => {
   const targetChannelId = process.env.TARGET_CHANNEL_ID; // Store the target channel ID in .env
   setupDailyAlarm(client, targetChannelId);
-  client.user.setActivity("Starry Jet", { type: ActivityType.Listening });
+  client.user.setActivity("スイちゃんのメンテナンスソング", { type: ActivityType.Listening });
   
   console.log(`Logged in as ${client.user.tag}!`);
 
