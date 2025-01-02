@@ -159,8 +159,8 @@ const executeCommand = async (interaction, isSlash = true) => {
 
 client.on("messageCreate", async (message) => {
   if (message.content === "!testalarm") {
-    const targetChannelId = process.env.TARGET_CHANNEL_ID; // Store the target channel ID in .env
-    triggerAlarm(message.client, targetChannelId);
+    const channelId = message.channel.id;
+    await triggerAlarm(message.client, channelId);
     message.reply("Alarm triggered for testing!");
   }
   await executeCommand(message, false);
