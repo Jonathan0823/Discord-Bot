@@ -16,7 +16,7 @@ const client = new Client({
   ],
 });
 const { setupDailyAlarm, triggerAlarm } = require("./utils/alarm");
-const { songs } = require("./songlist");
+const { songs } = require("./utils/songlist");
 
 client.on("ready", () => {
   const targetChannelId = process.env.TARGET_CHANNEL_ID; // Store the target channel ID in .env

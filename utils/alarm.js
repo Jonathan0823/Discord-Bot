@@ -33,7 +33,7 @@ async function triggerAlarm(client, channelId) {
   while (attempts < maxRetries && !success) {
     try {
       const button1 = new ButtonBuilder()
-        .setLabel("GI")
+        .setLabel("GI ")
         .setStyle(ButtonStyle.Link)
         .setURL(
           "https://act.hoyolab.com/ys/event/signin-sea-v3/index.html?act_id=e202102251931481&hyl_auth_required=true&hyl_presentation_style=fullscreen&utm_source=share&utm_medium=link&utm_campaign=web"
