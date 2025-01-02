@@ -19,10 +19,17 @@ const { setupDailyAlarm, triggerAlarm } = require("./utils/alarm");
 const { songs } = require("./utils/songlist");
 
 client.on("ready", () => {
-  const targetChannelId = process.env.TARGET_CHANNEL_ID; // Store the target channel ID in .env
-  setupDailyAlarm(client, targetChannelId);
-  client.user.setActivity("スイちゃんのメンテナンスソング", { type: ActivityType.Listening });
-  
+  const targetChannelId = [
+    process.env.TARGET_CHANNEL_ID,
+    process.env.TARGET_CHANNEL_ID2,
+  ];
+  targetChannelId.forEach((channelId) => {
+    setupDailyAlarm(client, channelId);
+  });
+  client.user.setActivity("スイちゃんのメンテナンスソング", {
+    type: ActivityType.Listening,
+  });
+
   console.log(`Logged in as ${client.user.tag}!`);
 
   setInterval(() => {
