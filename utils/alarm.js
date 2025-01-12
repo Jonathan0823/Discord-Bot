@@ -73,8 +73,10 @@ async function triggerAlarm(client, channelId) {
           button3
         );
 
+        const randomColor = `#${Math.floor( Math.random() * 16777215 ).toString(16).padStart(6, '0')}`;
+
         const embed = new EmbedBuilder()
-          .setColor(0xffc0cb)
+          .setColor(randomColor)
           .setTitle("Check In Yuk!")
           .setDescription(
             "Pagii!! Jangan lupa sarapan dan check-in Hoyolab kamu ya~ 🍞☕"
