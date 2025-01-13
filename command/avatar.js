@@ -14,7 +14,8 @@
       const embed = new EmbedBuilder()
         .setTitle(`${user.username}'s Avatar`)
         .setImage(avatar)
-        .setColor(randomColor);
+        .setColor(randomColor)
+        .setFooter(`Requested by ${message.author.username}`);
 
       await message.channel.send({ embeds: [embed] });
     },
