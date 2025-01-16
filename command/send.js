@@ -16,7 +16,9 @@ module.exports = {
             // Initial reply
             await interaction.reply("Please enter the message you want to send.");
             
+            const MessageFilter = m => m.author.username === sender;
             const collected = await currentChannel.awaitMessages({ 
+                filter: MessageFilter,
                 max: 1, 
                 time: 60000,
                 errors: ['time']
@@ -28,6 +30,7 @@ module.exports = {
             await interaction.reply("Please enter the channel ID you want to send the message to.");
             
             const channelCollected = await currentChannel.awaitMessages({ 
+                filter: MessageFilter,
                 max: 1, 
                 time: 60000,
                 errors: ['time']
