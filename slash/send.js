@@ -64,16 +64,20 @@ module.exports = {
 
       await collectedChannel.first().delete();
 
-      // Step 3: Fetch and validate the target channel
-      const targetChannel = await interaction.client.channels.fetch(channelId);
-      if (!targetChannel || !targetChannel.isTextBased()) {
-        await interaction.editReply(
-          "Error: The provided channel ID is invalid."
-        );
-        return;
-      }
+      const ArrayChannelId = channelId.split(" ");
 
-      await targetChannel.send(messageContent);
+      ArrayChannelId.forEach(async (channelId) => {
+       const targetChannel = await interaction.client.channels.fetch(channelId);
+        if (!targetChannel || !targetChannel.isTextBased()) {
+          await interaction.editReply(
+            "Error: The provided channel ID is invalid."
+          );
+          return;
+        }
+
+        await targetChannel.send(messageContent);
+      });
+
       await interaction.editReply("Message sent successfully!");
     } catch (error) {
       if (error.message === "time") {
