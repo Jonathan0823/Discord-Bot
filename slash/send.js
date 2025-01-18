@@ -64,16 +64,25 @@ module.exports = {
 
       await collectedChannel.first().delete();
 
+      const channelIdArray = channelId.split(" ");
+
       // Step 3: Fetch and validate the target channel
-      const targetChannel = await interaction.client.channels.fetch(channelId);
-      if (!targetChannel || !targetChannel.isTextBased()) {
-        await interaction.editReply(
-          "Error: The provided channel ID is invalid."
+      for (let i = 0; i < channelIdArray.length; i++) {
+        const targetChannel = interaction.guild.channels.cache.get(
+          channelIdArray[i]
         );
-        return;
+
+        if (!targetChannel) {
+          await interaction.editReply(
+            "Error: Could not find or access the specified channel."
+          );
+          return;
+        }
+
+        // Step 4: Send the message to the target channel
+        await targetChannel.send(messageContent);
       }
 
-      await targetChannel.send(messageContent);
       await interaction.editReply("Message sent successfully!");
     } catch (error) {
       if (error.message === "time") {
