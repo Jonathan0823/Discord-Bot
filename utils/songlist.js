@@ -22,6 +22,7 @@ const songs = [
   "Caramel Pain",
   "DEADPOOL",
   "繭と心",
+  "ビーナスバグ",
 ];
 
 module.exports = {
