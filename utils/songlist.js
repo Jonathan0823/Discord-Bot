@@ -19,6 +19,9 @@ const songs = [
   "ビビデバ",
   "Midnight Mission",
   "Damn Good Day",
+  "Caramel Pain",
+  "DEADPOOL",
+  "繭と心",
 ];
 
 module.exports = {
