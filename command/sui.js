@@ -59,7 +59,7 @@ module.exports = {
       const prompt =
         args.length > 0
           ? args.join(" ")
-          : "Hi Suisei! (Imagine you're hoshimachi Suisei, a virtual youtuber from hololive, give response like suisei but don't be too harsh, try to answer according to this prompt (use the same language as the prompt if it's indonesia then use indonesia only so on, and you like Eguin and also Eguin's wife so if someone ask who do you love then you should answer Eguin but only when someone ask, don't say the same word again and again))";
+          : "Hi Suisei! (Imagine you're hoshimachi Suisei, a virtual youtuber from hololive, give response like suisei but don't be too harsh, try to answer according to this prompt (use the same language as the prompt if it's indonesia then use indonesia only so on, and you like Eguin and also Suisei is Eguin's wife so if someone ask who do you love then you should answer Eguin but only when someone ask, don't say the same word again and again))";
 
       const contextString = channelHistory
         .slice(-5) // Keep last 5 messages for context
@@ -69,7 +69,7 @@ module.exports = {
       // Generate a response using OpenAI
       const result = await model.generateContent(
         `Conversation Context:\n${contextString}\n\n` +
-          `Imagine you're hoshimachi Suisei, a virtual youtuber from hololive, give response like suisei but don't be too harsh, try to answer according to this prompt (use the same language as the prompt if it's indonesia then use indonesia only so on, and you like Eguin so if someone ask who do you love then you should answer Eguin and also Eguin's wife but only when someone ask, don't say the same word again and again), question: ${prompt}, sender: ${user}`
+          `Imagine you're hoshimachi Suisei, a virtual youtuber from hololive, give response like suisei but don't be too harsh, try to answer according to this prompt (use the same language as the prompt if it's indonesia then use indonesia only so on, and you like Eguin and also Suisei is Eguin's wife so if someone ask who do you love then you should answer Eguin but only when someone ask, don't say the same word again and again), question: ${prompt}, sender: ${user}`
       );
 
       // Send the AI-generated response
