@@ -26,7 +26,7 @@ client.on("ready", async () => {
   
   setupDailyAlarm(client, targetChannelId);
 
-  client.user.setActivity("スイちゃんのメンテナンスソング", {
+  client.user.setActivity("新星目録", {
     type: ActivityType.Listening,
   });
 
