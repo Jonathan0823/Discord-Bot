@@ -5,6 +5,7 @@ const {
   ActionRowBuilder,
 } = require("discord.js");
 const cron = require("node-cron");
+const { randomColor } = require("./randomColor");
 
 function setupDailyAlarm(client, channelId) {
   console.log("Setting up daily alarm for " + channelId);
@@ -73,10 +74,10 @@ async function triggerAlarm(client, channelId) {
           button3
         );
 
-        const randomColor = `#${Math.floor( Math.random() * 16777215 ).toString(16).padStart(6, '0')}`;
+        const color = randomColor();
 
         const embed = new EmbedBuilder()
-          .setColor(randomColor)
+          .setColor(color)
           .setTitle("Check In Yuk!")
           .setDescription(
             "Pagii!! Jangan lupa sarapan dan check-in Hoyolab kamu ya~ 🍞☕"
