@@ -9,25 +9,35 @@ module.exports = {
     .addUserOption((option) =>
       option
         .setName("user")
-        .setDescription("The user to get the avatar from")
+        .setDescription("The user whose avatar you want to view")
         .setRequired(false)
     ),
 
   execute: async (interaction) => {
-    const user = interaction.options.getUser("user") || interaction.user;
-    const avatar = user.displayAvatarURL({ dynamic: true, size: 4096 });
+    try {
+      // Defer to allow for longer processing
+      await interaction.deferReply();
 
-    const color = getRandomColor();
+      const user = interaction.options.getUser("user") || interaction.user;
+      const avatar = user.displayAvatarURL({ dynamic: true, size: 4096 });
+      const color = getRandomColor();
 
-    const embed = new EmbedBuilder()
-      .setTitle(`${user.username}'s Avatar`)
-      .setImage(avatar)
-      .setColor(color)
-      .setFooter({ text: `Requested by ${interaction.user.username}` });
+      const embed = new EmbedBuilder()
+        .setTitle(`${user.username}'s Avatar`)
+        .setImage(avatar)
+        .setColor(color)
+        .setFooter({ text: `Requested by ${interaction.user.username}` });
 
-    await interaction.channel.send({ embeds: [embed] });
+      await interaction.editReply({ embeds: [embed] });
+    } catch (error) {
+      console.error("Error processing the avatar command:", error);
 
-    await interaction.deferReply({ ephemeral: true });
-    await interaction.deleteReply();
+      if (!interaction.replied) {
+        await interaction.reply({
+          content: "An error occurred while processing your command!",
+          ephemeral: true,
+        });
+      }
+    }
   },
 };
