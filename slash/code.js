@@ -1,7 +1,4 @@
-const {
-  SlashCommandBuilder,
-  EmbedBuilder,
-} = require("discord.js");
+const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
 const { getRandomColor } = require("../utils/randomColor");
 
 const link = {
@@ -23,6 +20,19 @@ const getGameName = (game) => {
   }
 };
 
+const getEmoji = (game) => {
+  switch (game) {
+    case "gi":
+      return "<:genshinimpact:1324355501466849331>";
+    case "hsr":
+      return "<:hsr:1324355673567395921>";
+    case "zzz":
+      return "<:zenless:1324356078825377932>";
+    default:
+      return "";
+  }
+};
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("code")
@@ -33,6 +43,9 @@ module.exports = {
   async execute(interaction) {
     const sender = interaction.user.username;
     const currentChannel = interaction.channel;
+    const messageFilter = (m) => m.author.id === interaction.user.id;
+
+    await interaction.deferReply({ ephemeral: true });
 
     if (sender !== "lynz727wysi") {
       await interaction.reply({
@@ -43,51 +56,40 @@ module.exports = {
     }
 
     try {
-      await interaction.reply({
-        content:
-          "Please choose a game you want to send to send code. Type 'c' to cancel.",
-        ephemeral: true,
-      });
-
-      const messageFilter = (m) => m.author.id === interaction.user.id;
+      await interaction.editReply(
+        "Please choose a game (gi, hsr, zzz) or type 'c' to cancel."
+      );
       const collectedGame = await currentChannel.awaitMessages({
         filter: messageFilter,
         max: 1,
         time: 60000,
         errors: ["time"],
       });
+      const selectedGame = collectedGame.first().content.toLowerCase();
 
-      const selectedGame = collectedGame.first().content;
-
-      if (selectedGame.toLowerCase() === "c") {
+      if (selectedGame === "c") {
         await interaction.editReply("Command cancelled.");
-        collectedChannel.first().delete();
+        collectedGame.first().delete();
         return;
       }
 
-      if (
-        selectedGame.toLowerCase() !== "gi" &&
-        selectedGame.toLowerCase() !== "hsr" &&
-        selectedGame.toLowerCase() !== "zzz"
-      ) {
+      if (!["gi", "hsr", "zzz"].includes(selectedGame)) {
         await interaction.editReply("Invalid game selected.");
+        collectedGame.first().delete();
         return;
       }
 
-      await collectedGame.first().delete();
+      collectedGame.first().delete();
 
-      await interaction.reply({
-        content: `Please enter the code you want to send use "," to for each code. Type 'c' to cancel.`,
-        ephemeral: true,
-      });
-
+      await interaction.editReply(
+        "Enter the codes (separate with ',') or type 'c' to cancel."
+      );
       const collectedCode = await currentChannel.awaitMessages({
         filter: messageFilter,
         max: 1,
         time: 60000,
         errors: ["time"],
       });
-
       const codeContent = collectedCode.first().content;
 
       if (codeContent.toLowerCase() === "c") {
@@ -124,10 +126,16 @@ module.exports = {
 
       const ArrayChannelId = channelId.split(" ");
 
+      const maxCodeLength = Math.max(...codes.map((code) => code.length));
+
       // Code embed
       const color = getRandomColor();
       const embed = new EmbedBuilder()
-        .setTitle(`Redeem Code ${getGameName(selectedGame.toLowerCase())}!`)
+        .setTitle(
+          `${getEmoji(selectedGame)}   Redeem Code ${getGameName(
+            selectedGame
+          )}!`
+        )
         .setColor(color)
         .setDescription(
           `Halo ${
@@ -136,11 +144,15 @@ module.exports = {
               : selectedGame === "hsr"
               ? "Trailblazer"
               : "Proxy"
-          } ada kode redeem nih! Yuk segera di redeem!
-           
-          Code: ${codes
+          } ada kode redeem baru nih! Yuk segera di redeem!
+
+          **${codes?.length > 1 ? "Codes" : "Code"} : **
+          ${codes
             .map(
-              (code) => `[${code}](${link[selectedGame.toLowerCase()]}${code})`
+              (code) =>
+                `\`${code.padEnd(maxCodeLength)}\` → [Redeem](${
+                  link[selectedGame]
+                }${code})`
             )
             .join("\n")}`
         );
@@ -156,7 +168,7 @@ module.exports = {
           return;
         }
 
-        await targetChannel.send(embed);
+        await targetChannel.send({ embeds: [embed] });
       });
 
       await interaction.editReply("Message sent successfully!");
