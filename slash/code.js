@@ -1,10 +1,27 @@
 const {
   SlashCommandBuilder,
   EmbedBuilder,
-  ButtonBuilder,
-  ButtonStyle,
-  ActionRowBuilder,
 } = require("discord.js");
+const { getRandomColor } = require("../utils/randomColor");
+
+const link = {
+  gi: "https://genshin.hoyoverse.com/en/gift?code=",
+  hsr: "https://hsr.hoyoverse.com/gift?code=",
+  zzz: "https://zenless.hoyoverse.com/redemption?code=",
+};
+
+const getGameName = (game) => {
+  switch (game) {
+    case "gi":
+      return "Genshin Impact";
+    case "hsr":
+      return "Honkai Star Rail";
+    case "zzz":
+      return "Zenless Zone";
+    default:
+      return "Unknown Game";
+  }
+};
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -28,27 +45,60 @@ module.exports = {
     try {
       await interaction.reply({
         content:
-          "Please enter the message you want to send. Type 'c' to cancel.",
+          "Please choose a game you want to send to send code. Type 'c' to cancel.",
         ephemeral: true,
       });
 
       const messageFilter = (m) => m.author.id === interaction.user.id;
-      const collectedMessage = await currentChannel.awaitMessages({
+      const collectedGame = await currentChannel.awaitMessages({
         filter: messageFilter,
         max: 1,
         time: 60000,
         errors: ["time"],
       });
 
-      const messageContent = collectedMessage.first().content;
+      const selectedGame = collectedGame.first().content;
 
-      if (messageContent.toLowerCase() === "c") {
+      if (selectedGame.toLowerCase() === "c") {
         await interaction.editReply("Command cancelled.");
         collectedChannel.first().delete();
         return;
       }
 
-      await collectedMessage.first().delete();
+      if (
+        selectedGame.toLowerCase() !== "gi" &&
+        selectedGame.toLowerCase() !== "hsr" &&
+        selectedGame.toLowerCase() !== "zzz"
+      ) {
+        await interaction.editReply("Invalid game selected.");
+        return;
+      }
+
+      await collectedGame.first().delete();
+
+      await interaction.reply({
+        content: `Please enter the code you want to send use "," to for each code. Type 'c' to cancel.`,
+        ephemeral: true,
+      });
+
+      const collectedCode = await currentChannel.awaitMessages({
+        filter: messageFilter,
+        max: 1,
+        time: 60000,
+        errors: ["time"],
+      });
+
+      const codeContent = collectedCode.first().content;
+
+      if (codeContent.toLowerCase() === "c") {
+        await interaction.editReply("Command cancelled.");
+        collectedChannel.first().delete();
+        return;
+      }
+
+      const codes = codeContent.split(",");
+
+      await collectedCode.first().delete();
 
       await interaction.editReply({
         content:
@@ -74,6 +124,27 @@ module.exports = {
 
       const ArrayChannelId = channelId.split(" ");
 
+      // Code embed
+      const color = getRandomColor();
+      const embed = new EmbedBuilder()
+        .setTitle(`Redeem Code ${getGameName(selectedGame.toLowerCase())}!`)
+        .setColor(color)
+        .setDescription(
+          `Halo ${
+            selectedGame === "gi"
+              ? "Traveler"
+              : selectedGame === "hsr"
+              ? "Trailblazer"
+              : "Proxy"
+          } ada kode redeem nih! Yuk segera di redeem!
+           
+          Code: ${codes
+            .map(
+              (code) => `[${code}](${link[selectedGame.toLowerCase()]}${code})`
+            )
+            .join("\n")}`
+        );
+
       ArrayChannelId.forEach(async (channelId) => {
         const targetChannel = await interaction.client.channels.fetch(
           channelId
@@ -85,7 +156,7 @@ module.exports = {
           return;
         }
 
-        await targetChannel.send(messageContent);
+        await targetChannel.send(embed);
       });
 
       await interaction.editReply("Message sent successfully!");
@@ -109,4 +180,3 @@ module.exports = {
     }
   },
 };
-
