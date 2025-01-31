@@ -7,6 +7,12 @@ const link = {
   zzz: "https://zenless.hoyoverse.com/redemption?code=",
 };
 
+const images = {
+  gi: "https://beebom.com/wp-content/uploads/2023/12/Genshin-Impact-4.3-Primogems-Count.jpg?w=1250&quality=75",
+  hsr: "https://cdn.medcom.id/dynamic/content/2023/05/02/1563876/iITSEDt8N0.jpg?w=480",
+  zzz: "https://static.icy-veins.com/forum-files/news/82447-zzz-offers-800-polychromes-as-a-token-of-gratitude.jpg",
+};
+
 const getGameName = (game) => {
   switch (game) {
     case "gi":
@@ -157,6 +163,7 @@ module.exports = {
           )}!`
         )
         .setColor(color)
+        .setImage(images[selectedGame])
         .setDescription(
           `Halo ${
             selectedGame === "gi"
