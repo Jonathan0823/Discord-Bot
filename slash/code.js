@@ -113,7 +113,7 @@ module.exports = {
 
       const codes = codeContent.split(",").map((entry) => {
         const parts = entry.trim().split(" ");
-        const code = parts[0];
+        const code = parts[0].toUpperCase();
         const value = parts[1] || "";
         return { code, value };
       });
