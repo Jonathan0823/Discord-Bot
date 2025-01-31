@@ -5,7 +5,7 @@ const {
   ActionRowBuilder,
 } = require("discord.js");
 const cron = require("node-cron");
-const { getRandomColor } = require("./randomColor");
+const { getRandomColor } = require("../helper/randomColor");
 
 function setupDailyAlarm(client, channelId) {
   console.log("Setting up daily alarm for " + channelId);

@@ -1,5 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require("discord.js");
-const { getRandomColor } = require("../utils/randomColor");
+const { getRandomColor } = require("../helper/randomColor");
 
 const link = {
   gi: "https://genshin.hoyoverse.com/en/gift?code=",

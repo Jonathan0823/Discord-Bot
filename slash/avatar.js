@@ -1,6 +1,6 @@
 const { EmbedBuilder } = require("discord.js");
-const { getRandomColor } = require("../utils/randomColor");
 const { SlashCommandBuilder } = require("discord.js");
+const { getRandomColor } = require("../helper/randomColor");
 
 module.exports = {
   data: new SlashCommandBuilder()
