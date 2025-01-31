@@ -33,6 +33,19 @@ const getEmoji = (game) => {
   }
 };
 
+const getCurrencyEmoji = (game) => {
+  switch (game) {
+    case "gi":
+      return "<:primo:1334721457883971614>";
+    case "hsr":
+      return "<:jade:1334721376635846686>";
+    case "zzz":
+      return "<:poly:1334721545477820557>";
+    default:
+      return "";
+  }
+};
+
 module.exports = {
   data: new SlashCommandBuilder()
     .setName("code")
@@ -82,7 +95,7 @@ module.exports = {
       collectedGame.first().delete();
 
       await interaction.editReply(
-        "Enter the codes (separate with ',') or type 'c' to cancel."
+        "Enter the codes (separate with ' ' for the items and ',' for other code) or type 'c' to cancel."
       );
       const collectedCode = await currentChannel.awaitMessages({
         filter: messageFilter,
@@ -98,7 +111,12 @@ module.exports = {
         return;
       }
 
-      const codes = codeContent.split(",");
+      const codes = codeContent.split(",").map((entry) => {
+        const parts = entry.trim().split(" ");
+        const code = parts[0];
+        const value = parts[1] || "";
+        return { code, value };
+      });
 
       await collectedCode.first().delete();
 
@@ -126,7 +144,9 @@ module.exports = {
 
       const ArrayChannelId = channelId.split(" ");
 
-      const maxCodeLength = Math.max(...codes.map((code) => code.length));
+      const maxCodeLength = Math.max(
+        ...codes.map((entry) => entry.code.length)
+      );
 
       // Code embed
       const color = getRandomColor();
@@ -149,10 +169,12 @@ module.exports = {
           **${codes?.length > 1 ? "Codes" : "Code"} : **
           ${codes
             .map(
-              (code) =>
-                `\`${code.padEnd(maxCodeLength)}\` → [Redeem](${
+              (entry) =>
+                `\`${entry.code.padEnd(maxCodeLength)}\` ・ **${
+                  entry.value
+                }** ${getCurrencyEmoji(selectedGame)} \u00A0\u00A0→ \u00A0\u00A0[Redeem](${
                   link[selectedGame]
-                }${code})`
+                }${entry.code})`
             )
             .join("\n")}`
         );
