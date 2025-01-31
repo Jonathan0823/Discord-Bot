@@ -122,7 +122,7 @@ module.exports = {
 
       await interaction.editReply({
         content:
-          "Please enter the channel ID where you want to send the message. Type 'c' to cancel.",
+          "Please enter the channel ID where you want to send the message (use ' ' to add more channel ids). Type 'c' to cancel.",
       });
 
       const collectedChannel = await currentChannel.awaitMessages({
@@ -172,9 +172,11 @@ module.exports = {
               (entry) =>
                 `\`${entry.code.padEnd(maxCodeLength)}\` ・ **${
                   entry.value
-                }** ${getCurrencyEmoji(selectedGame)} \u00A0\u00A0→ \u00A0\u00A0[Redeem](${
-                  link[selectedGame]
-                }${entry.code})`
+                }** ${getCurrencyEmoji(
+                  selectedGame
+                )} \u00A0\u00A0→ \u00A0\u00A0[Redeem](${link[selectedGame]}${
+                  entry.code
+                })`
             )
             .join("\n")}`
         );
