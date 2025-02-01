@@ -171,21 +171,17 @@ module.exports = {
               : selectedGame === "hsr"
               ? "Trailblazer"
               : "Proxy"
-          } ada kode redeem baru nih! Yuk segera di redeem!
+          }, ada kode redeem baru nih! Yuk segera di redeem!
 
-          **${codes?.length > 1 ? "Codes" : "Code"} : **
-          ${codes
-            .map(
-              (entry) =>
-                `\`${entry.code.padEnd(maxCodeLength)}\` ・ **${
-                  entry.value
-                }** ${getCurrencyEmoji(
-                  selectedGame
-                )} \u00A0\u00A0→ \u00A0\u00A0[Redeem](${link[selectedGame]}${
-                  entry.code
-                })`
-            )
-            .join("\n")}`
+  **Redeem Codes:**
+  ${codes
+    .map(
+      (entry) =>
+        `\`${entry.code}\` - **${entry.value}** ${getCurrencyEmoji(
+          selectedGame
+        )}\n[🎟 Redeem Now](${link[selectedGame]}${entry.code})`
+    )
+    .join("\n")}`
         );
 
       ArrayChannelId.forEach(async (channelId) => {
