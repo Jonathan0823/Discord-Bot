@@ -64,7 +64,7 @@ module.exports = {
     const currentChannel = interaction.channel;
     const messageFilter = (m) => m.author.id === interaction.user.id;
 
-    await interaction.deferReply();
+    await interaction.deferReply({ ephemeral: true });
 
     if (sender !== "lynz727wysi") {
       await interaction.editReply(
@@ -153,6 +153,10 @@ module.exports = {
         ...codes.map((entry) => entry.code.length)
       );
 
+      const maxValueLength = Math.max(
+        ...codes.map((entry) => entry.value.length)
+      );
+
       // Code embed
       const color = getRandomColor();
       const embed = new EmbedBuilder()
@@ -176,9 +180,11 @@ module.exports = {
   ${codes
     .map(
       (entry) =>
-        `\`${entry.code}\` ・ **${entry.value}** ${getCurrencyEmoji(
-          selectedGame
-        )} → [🎟 Redeem Now](${link[selectedGame]}${entry.code})`
+        `- \`${entry.code.padEnd(maxCodeLength)}\` ・ **\`${entry.value.padEnd(
+          maxValueLength
+        )}\`** ${getCurrencyEmoji(selectedGame)} → [Link](${
+          link[selectedGame]
+        }${entry.code})`
     )
     .join("\n")}`
         );
