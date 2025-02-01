@@ -64,13 +64,12 @@ module.exports = {
     const currentChannel = interaction.channel;
     const messageFilter = (m) => m.author.id === interaction.user.id;
 
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply({ flags: 64 });
 
     if (sender !== "lynz727wysi") {
-      await interaction.reply({
-        content: "You are not authorized to use this command.",
-        ephemeral: true,
-      });
+      await interaction.editReply(
+        "You are not authorized to use this command."
+      );
       return;
     }
 
@@ -177,9 +176,9 @@ module.exports = {
   ${codes
     .map(
       (entry) =>
-        `\`${entry.code}\` - **${entry.value}** ${getCurrencyEmoji(
+        `\`${entry.code}\` ・ **${entry.value}** ${getCurrencyEmoji(
           selectedGame
-        )}\n[🎟 Redeem Now](${link[selectedGame]}${entry.code})`
+        )} → [🎟 Redeem Now](${link[selectedGame]}${entry.code})`
     )
     .join("\n")}`
         );
