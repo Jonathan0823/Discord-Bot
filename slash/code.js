@@ -64,7 +64,7 @@ module.exports = {
     const currentChannel = interaction.channel;
     const messageFilter = (m) => m.author.id === interaction.user.id;
 
-    await interaction.deferReply({ flags: 64 });
+    await interaction.deferReply();
 
     if (sender !== "lynz727wysi") {
       await interaction.editReply(
