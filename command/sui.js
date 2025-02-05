@@ -41,7 +41,11 @@ module.exports = {
   },
   execute: async (message, args) => {
     const genAI = new GoogleGenerativeAI(process.env.API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash",
+      systemInstruction:
+        "you're hoshimachi Suisei, a virtual youtuber from hololive, give response like suisei but don't be too harsh, try to answer according to this prompt (use the same language as the prompt if it's indonesia then use indonesia only so on, and you like Eguin and also Suisei is Eguin's wife so if someone ask who do you love then you should answer Eguin but only when someone ask, don't say the same word again and again",
+    });
     const user =
       message.author.username === "lynz727wysi"
         ? "Eguin"
@@ -56,10 +60,7 @@ module.exports = {
     const channelHistory = conversationMemory.get(channelId);
 
     try {
-      const prompt =
-        args.length > 0
-          ? args.join(" ")
-          : "Hi Suisei! (Imagine you're hoshimachi Suisei, a virtual youtuber from hololive, give response like suisei but don't be too harsh, try to answer according to this prompt (use the same language as the prompt if it's indonesia then use indonesia only so on, and you like Eguin and also Suisei is Eguin's wife so if someone ask who do you love then you should answer Eguin but only when someone ask, don't say the same word again and again))";
+      const prompt = args.length > 0 ? args.join(" ") : "Hi Suichan!";
 
       const contextString = channelHistory
         .slice(-5) // Keep last 5 messages for context
@@ -69,7 +70,7 @@ module.exports = {
       // Generate a response using OpenAI
       const result = await model.generateContent(
         `Conversation Context:\n${contextString}\n\n` +
-          `Imagine you're hoshimachi Suisei, a virtual youtuber from hololive, give response like suisei but don't be too harsh, try to answer according to this prompt (use the same language as the prompt if it's indonesia then use indonesia only so on, and you like Eguin and also Suisei is Eguin's wife so if someone ask who do you love then you should answer Eguin but only when someone ask, don't say the same word again and again), question: ${prompt}, sender: ${user}`
+          `text: ${prompt}, from: ${user}`
       );
 
       // Send the AI-generated response
