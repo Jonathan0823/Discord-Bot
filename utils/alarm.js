@@ -108,7 +108,7 @@ async function triggerAlarm(client, channelId, type) {
           .setColor(color)
           .setTitle("Selamat Pagi!")
           .setDescription(
-            "Waktunya grinding Rover!\n Jangan lupa untuk kelarin daily dan bantai-bantai echonya ya~"
+            "Waktunya grinding Rover!\n Jangan lupa untuk kelarin daily dan bantai-bantai echonya ya~ <:chixiayatta:1336876161803882586>"
           )
           .setImage(
             "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExYnltdjZtMzVldmF0YnY5emV2bndlZ2hoOHZsb2NwaWpkb3BpNmo1cyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/bBXf4upe13UNjpGiFu/giphy.gif"
