@@ -7,20 +7,34 @@ const {
 const cron = require("node-cron");
 const { getRandomColor } = require("../helper/randomColor");
 
-function setupDailyAlarm(client, channelId) {
-  console.log("Setting up daily alarm for " + channelId);
-  cron.schedule(
-    "0 4 * * *",
-    async () => {
-      await triggerAlarm(client, channelId);
-    },
-    {
-      timezone: "Asia/Jakarta",
-    }
+function setupDailyAlarm(client, channelId, type) {
+  console.log(
+    "Setting up daily alarm for " + channelId + " with type: " + type
   );
+  if (type === "hoyo") {
+    cron.schedule(
+      "0 4 * * *",
+      async () => {
+        await triggerAlarm(client, channelId, type);
+      },
+      {
+        timezone: "Asia/Jakarta",
+      }
+    );
+  } else {
+    cron.schedule(
+      "0 3 * * *",
+      async () => {
+        await triggerAlarm(client, channelId, type);
+      },
+      {
+        timezone: "Asia/Jakarta",
+      }
+    );
+  }
 }
 
-async function triggerAlarm(client, channelId) {
+async function triggerAlarm(client, channelId, type) {
   if (!Array.isArray(channelId)) {
     console.error("channelId must be an array of IDs.");
     return;
@@ -90,7 +104,27 @@ async function triggerAlarm(client, channelId) {
           )
           .setFooter({ text: "Hari ini semangat ya! 💪" });
 
-        await channel.send({ embeds: [embed], components: [row] });
+        const embedWuwa = new EmbedBuilder()
+          .setColor(color)
+          .setTitle("Selamat Pagi!")
+          .setDescription(
+            "Waktunya grinding Rover!\n Jangan lupa untuk kelarin daily dan bantai-bantai echonya ya~"
+          )
+          .setImage(
+            "https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExYnltdjZtMzVldmF0YnY5emV2bndlZ2hoOHZsb2NwaWpkb3BpNmo1cyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/bBXf4upe13UNjpGiFu/giphy.gif"
+          )
+          .setFooter({ text: "Hari ini semangat ya! 💪" });
+
+        if (type === "hoyo") {
+          await channel.send({
+            embeds: [embed],
+            components: [row],
+          });
+        } else {
+          await channel.send({
+            embeds: [embedWuwa],
+          });
+        }
         success = true; // Mark as success if the operation completes without error
         console.log(
           `Alarm sent successfully! (retry = ${attempts}, clientId = ${id})`

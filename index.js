@@ -23,8 +23,8 @@ client.on("ready", async () => {
     process.env.TARGET_CHANNEL_ID,
     process.env.TARGET_CHANNEL_ID2,
   ];
-  
-  setupDailyAlarm(client, targetChannelId);
+
+  setupDailyAlarm(client, targetChannelId, "hoyo");
 
   client.user.setActivity("新星目録", {
     type: ActivityType.Listening,
@@ -166,9 +166,14 @@ const executeCommand = async (interaction, isSlash = true) => {
 };
 
 client.on("messageCreate", async (message) => {
-  if (message.content === "!testalarm") {
+  if (message.content === "!alarm") {
     const channelId = [message.channel.id];
-    await triggerAlarm(message.client, channelId);
+    await triggerAlarm(message.client, channelId, (type = "hoyo"));
+    message.reply("Alarm triggered for testing!");
+  }
+  if (message.content === "!alarmwuwa") {
+    const channelId = [message.channel.id];
+    await triggerAlarm(message.client, channelId, (type = "wuwa"));
     message.reply("Alarm triggered for testing!");
   }
   await executeCommand(message, false);
