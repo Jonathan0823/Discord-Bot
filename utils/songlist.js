@@ -23,6 +23,7 @@ const songs = [
   "DEADPOOL",
   "繭と心",
   "ビーナスバグ",
+  "Orbital Period"
 ];
 
 module.exports = {
