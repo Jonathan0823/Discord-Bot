@@ -176,7 +176,7 @@ module.exports = {
   ${codes
     .map(
       (entry) =>
-        `- \`${entry.code.padEnd(maxCodeLength)}\` ・ **\`${entry.value.padEnd(
+        `\`${entry.code.padEnd(maxCodeLength)}\` ・ **\`${entry.value.padEnd(
           maxValueLength
         )}\`** ${getCurrencyEmoji(selectedGame)} → [Link](${
           link[selectedGame]
