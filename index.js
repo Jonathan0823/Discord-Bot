@@ -1,5 +1,5 @@
 require("dotenv/config");
-require("./server")
+require("./server");
 const fs = require("fs");
 const path = require("path");
 const {
@@ -55,6 +55,11 @@ const slashFiles = fs
   .readdirSync(slashPath)
   .filter((file) => file.endsWith(".js"));
 
+const eventsPath = path.join(__dirname, "events");
+const eventFiles = fs
+  .readdirSync(eventsPath)
+  .filter((file) => file.endsWith(".js"));
+
 for (const file of commandFiles) {
   const command = require(path.join(commandsPath, file));
   commands.push(command);
@@ -65,6 +70,17 @@ for (const file of slashFiles) {
   const command = require(path.join(slashPath, file));
   slashCommands.push(command.data.toJSON());
   slashCommandMap.set(command.data.name, command);
+}
+
+for (const file of eventFiles) {
+  const filePath = path.join(eventsPath, file);
+  const event = require(filePath);
+
+  if (event.once) {
+    client.once(event.name, (...args) => event.execute(...args));
+  } else {
+    client.on(event.name, (...args) => event.execute(...args));
+  }
 }
 
 const rest = new REST({ version: "10" }).setToken(
