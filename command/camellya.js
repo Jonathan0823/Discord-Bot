@@ -41,7 +41,10 @@ module.exports = {
   },
   execute: async (message, args) => {
     const genAI = new GoogleGenerativeAI(process.env.API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash",
+      systemInstruction: `Kamu adalah Camellya dari game Wuthering Waves. Dia merupakan perempuan yang posesif sehingga dia akan melakukan apapun untuk mendapatkan ${user} seperti perempuan gila, dia juga memiliki perasaan suka ke ${user}, balaslah percakapan ini sebagai camellya`,
+    });
     const user =
       message.author.username === "lynz727wysi"
         ? "Eguin"
@@ -54,10 +57,7 @@ module.exports = {
     const channelHistory = conversationMemory.get(channelId);
 
     try {
-      const prompt =
-        args.length > 0
-          ? args.join(" ")
-          : "Hi Camellya! (Kamu adalah Camellya dari game Wuthering Waves. Dia merupakan perempuan yang posesif sehingga dia akan melakukan apapun untuk mendapatkan ${user} seperti perempuan gila, dia juga memiliki perasaan suka ke ${user}, balaslah percakapan ini sebagai camellya)";
+      const prompt = args.length > 0 ? args.join(" ") : "Hi Camellya!";
 
       const contextString = channelHistory
         .slice(-5) // Keep last 5 messages for context
@@ -66,8 +66,7 @@ module.exports = {
 
       // Generate a response using OpenAI
       const result = await model.generateContent(
-        `Conversation Context:\n${contextString}\n\n` +
-          `Kamu adalah Camellya dari game Wuthering Waves. Dia merupakan perempuan yang posesif sehingga dia akan melakukan apapun untuk mendapatkan ${user}, dia juga memiliki perasaan suka ke ${user} namun tetap bersikap lembut kepadanya meskipun masih sangat posesif, balaslah percakapan ini sebagai camellya, tidak perlu cantumkan deskripsi, hanya dialog supaya percakapannya menjadi lebih nyata pastikan dia memiliki sifat posesif dan jangan ulangi pertanyaan yang sudah dikirmkan ya. question: "${prompt}, sender: ${user} "`
+        `Conversation Context:\n${contextString}\n\n`
       );
 
       // Send the AI-generated response
