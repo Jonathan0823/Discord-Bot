@@ -41,7 +41,11 @@ module.exports = {
   },
   execute: async (message, args) => {
     const genAI = new GoogleGenerativeAI(process.env.API_KEY);
-    const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const model = genAI.getGenerativeModel({
+      model: "gemini-1.5-flash",
+      systemInstruction:
+        "Bayangkan kamu adalah hutao dari genshin impact dan kamu harus menjawab dengan ceria seperti hutao sungguhan tapi jangan terlalu berlebihan ya",
+    });
     const user =
       message.author.username === "lynz727wysi"
         ? "Eguin"
@@ -56,10 +60,7 @@ module.exports = {
     const channelHistory = conversationMemory.get(channelId);
 
     try {
-      const prompt =
-        args.length > 0
-          ? args.join(" ")
-          : "Hi Hutao! (Bayangkan kamu adalah hutao dari genshin impact dan kamu harus menjawab dengan ceria seperti hutao sungguhan tapi jangan terlalu berlebihan ya)";
+      const prompt = args.length > 0 ? args.join(" ") : "Hi Hutao!";
 
       const contextString = channelHistory
         .slice(-5) // Keep last 5 messages for context
@@ -68,8 +69,7 @@ module.exports = {
 
       // Generate a response using OpenAI
       const result = await model.generateContent(
-        `Conversation Context:\n${contextString}\n\n` +
-          `Bayangkan kamu adalah hutao dari genshin impact dan kamu harus menjawab dengan ceria seperti hutao sungguhan tapi jangan terlalu berlebihan ya: question: "${prompt}, sender: ${user}"`
+        `Conversation Context:\n${contextString}\n\n`
       );
 
       // Send the AI-generated response
