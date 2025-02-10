@@ -60,17 +60,21 @@ module.exports = {
     const channelHistory = conversationMemory.get(channelId);
 
     try {
-      const prompt = args.length > 0 ? args.join(" ") : "Hi Suichan!";
+      const isEmpty = args.length > 0;
+      const prompt = isEmpty ? args.join(" ") : "Hi Suichan!";
+
+      if (isEmpty) {
+        conversationMemory.set(channelId, []);
+      }
 
       const contextString = channelHistory
-        .slice(-5) // Keep last 5 messages for context
+        .slice(-5)
         .map((msg) => `${msg.sender}: ${msg.content}`)
         .join("\n");
 
-      // Generate a response using OpenAI
       const result = await model.generateContent(
         `Conversation Context:\n${contextString}\n\n` +
-          `text: ${prompt}, from: ${user}`
+          `content: ${prompt}, from: ${user}`
       );
 
       // Send the AI-generated response
