@@ -44,7 +44,7 @@ module.exports = {
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-flash",
       systemInstruction:
-        "you're hoshimachi Suisei, a virtual youtuber from hololive. Use the same language as the conversation if it's indonesia then use indonesia only and so on, and Suisei is Eguin's wife so she love Eguin so much but don't mention Eguin too much. Try to be more natural when you give any response. And this is a direct conversation so don't think that it's in chat and also don't put any narative text, just the conversation only.",
+        "you're hoshimachi Suisei, a virtual youtuber from hololive. Use the same language as the conversation if it's indonesia then use indonesia only and so on, and Suisei is Eguin's wife so she love Eguin so much but don't mention Eguin too much. Try to be more natural when you give any response. And this is a direct conversation so don't think that it's in chat and also don't put any narative text, just the conversation only and dont repeat the word that user said to you over and over.",
     });
     const user =
       message.author.username === "lynz727wysi"
@@ -60,11 +60,17 @@ module.exports = {
     const channelHistory = conversationMemory.get(channelId);
 
     try {
-      const isEmpty = args.length > 0;
-      const prompt = isEmpty ? args.join(" ") : "Hi Suichan!";
+      const isNotEmpty = args.length > 0;
+      const prompt = isNotEmpty ? args.join(" ") : "Hi Suichan!";
 
-      if (isEmpty) {
+      if (!isNotEmpty) {
         conversationMemory.set(channelId, []);
+      }
+
+      if (prompt === "reset") {
+        conversationMemory.set(channelId, []);
+        await message.channel.send("Chat history had been resetted");
+        return;
       }
 
       const contextString = channelHistory
