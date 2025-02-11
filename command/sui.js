@@ -50,7 +50,9 @@ module.exports = {
         .join("\n");
 
       const result = await model.generateContent(
-        `Conversation Context:\n${contextString}\n\n` + `${user}:\n${prompt}`
+        `Conversation Context:\n${contextString}\n\n` + `
+        ${user}: ${prompt}
+        `
       );
 
       // Send the AI-generated response
