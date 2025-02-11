@@ -18,6 +18,7 @@ const client = new Client({
 });
 const { setupDailyAlarm, triggerAlarm } = require("./utils/alarm");
 const { songs } = require("./utils/songlist");
+const { triggerWords } = require("./events/triggerWord");
 
 client.on("ready", async () => {
   const targetChannelId = [
@@ -105,12 +106,8 @@ const executeCommand = async (interaction, isSlash = true) => {
   try {
     // For message commands
     if (!isSlash) {
-      if (
-        interaction.content &&
-        !interaction.author.bot &&
-        interaction.content.toLowerCase() === "nigger"
-      ) {
-        await interaction.channel.send("Fakyumanigger");
+      const handled = await triggerWords(interaction);
+      if (handled) {
         return true;
       }
 
