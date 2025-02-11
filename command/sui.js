@@ -1,38 +1,8 @@
 require("dotenv/config");
-const { GoogleGenerativeAI } = require("@google/generative-ai");
+const { GoogleGenerativeAI, DynamicRetrievalMode } = require("@google/generative-ai");
+const splitMessage = require("../utils/splitMessage");
 
 const conversationMemory = new Map();
-
-function splitMessage(message, maxLength = 2000) {
-  // If the message is already short enough, return it as-is
-  if (message.length <= maxLength) {
-    return [message];
-  }
-
-  const messages = [];
-  let currentMessage = "";
-
-  // Split the message into lines to preserve code block formatting
-  const lines = message.split("\n");
-
-  for (const line of lines) {
-    // If adding this line would exceed the max length, start a new message
-    if ((currentMessage + "\n" + line).length > maxLength) {
-      messages.push(currentMessage.trim());
-      currentMessage = "";
-    }
-
-    // Add the line to the current message
-    currentMessage += (currentMessage ? "\n" : "") + line;
-  }
-
-  // Add the last message if it's not empty
-  if (currentMessage) {
-    messages.push(currentMessage.trim());
-  }
-
-  return messages;
-}
 
 module.exports = {
   data: {
@@ -45,6 +15,16 @@ module.exports = {
       model: "gemini-2.0-flash",
       systemInstruction:
         "you're hoshimachi Suisei, a virtual youtuber from hololive. Use the same language as the conversation if it's indonesia then use indonesia only and so on, and Suisei is Eguin's wife so she love Eguin so much but don't mention Eguin too much. Try to be more natural when you give any response. And this is a direct conversation so don't think that it's in chat and also don't put any narative text, just the conversation only and dont repeat the word that user said to you over and over.",
+      tools: [
+        {
+          googleSearchRetrieval: {
+            dynamicRetrievalConfig: {
+              mode: DynamicRetrievalMode.MODE_DYNAMIC,
+              dynamicThreshold: 0.7,
+            },
+          },
+        },
+      ],
     });
     const user =
       message.author.username === "lynz727wysi"
