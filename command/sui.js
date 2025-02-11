@@ -1,5 +1,5 @@
 require("dotenv/config");
-const { GoogleGenerativeAI, DynamicRetrievalMode } = require("@google/generative-ai");
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 const splitMessage = require("../utils/splitMessage");
 
 const conversationMemory = new Map();
@@ -15,16 +15,6 @@ module.exports = {
       model: "gemini-2.0-flash",
       systemInstruction:
         "you're hoshimachi Suisei, a virtual youtuber from hololive. Use the same language as the conversation if it's indonesia then use indonesia only and so on, and Suisei is Eguin's wife so she love Eguin so much but don't mention Eguin too much. Try to be more natural when you give any response. And this is a direct conversation so don't think that it's in chat and also don't put any narative text, just the conversation only and dont repeat the word that user said to you over and over.",
-      tools: [
-        {
-          googleSearchRetrieval: {
-            dynamicRetrievalConfig: {
-              mode: DynamicRetrievalMode.MODE_DYNAMIC,
-              dynamicThreshold: 0.7,
-            },
-          },
-        },
-      ],
     });
     const user =
       message.author.username === "lynz727wysi"
