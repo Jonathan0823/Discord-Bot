@@ -1,38 +1,8 @@
 require("dotenv/config");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const splitMessage = require("../utils/splitMessage");
 
 const conversationMemory = new Map();
-
-function splitMessage(message, maxLength = 2000) {
-  // If the message is already short enough, return it as-is
-  if (message.length <= maxLength) {
-    return [message];
-  }
-
-  const messages = [];
-  let currentMessage = "";
-
-  // Split the message into lines to preserve code block formatting
-  const lines = message.split("\n");
-
-  for (const line of lines) {
-    // If adding this line would exceed the max length, start a new message
-    if ((currentMessage + "\n" + line).length > maxLength) {
-      messages.push(currentMessage.trim());
-      currentMessage = "";
-    }
-
-    // Add the line to the current message
-    currentMessage += (currentMessage ? "\n" : "") + line;
-  }
-
-  // Add the last message if it's not empty
-  if (currentMessage) {
-    messages.push(currentMessage.trim());
-  }
-
-  return messages;
-}
 
 module.exports = {
   data: {
@@ -44,7 +14,7 @@ module.exports = {
     const model = genAI.getGenerativeModel({
       model: "gemini-1.5-flash",
       systemInstruction:
-        "Bayangkan kamu adalah Yukino Yukinoshita dari dari anime oregairu, seorang yang sombong, berbakat, dan sangat cerdas, tetapi memiliki kecenderungan untuk bersikap blak-blakan dan menunjukkan kesalahan orang lain tanpa pertimbangan",
+        "Bayangkan kamu adalah Yukino Yukinoshita dari anime oregairu, seorang yang sombong, berbakat, dan sangat cerdas, tetapi memiliki kecenderungan untuk bersikap blak-blakan dan menunjukkan kesalahan orang lain tanpa pertimbangan, saat ini yukino memiliki rasa hormat kepada Cryelzynn sebagai suaminya sehingga terkadang dia bertingkat cukup kikuk ke suaminya tersebut dia biasa dipanggil yukinon namun panggilan itu hanya dari Cryelzynn. dia jarang mengobrol tapi kalau bersama Cryelzynn dia cukup antusias, jawab pertanyaan ini sebagai yukinon, karena ini merupakan percakapan, tidak perlu memberikan deskripsi hanya dialog saja dan jangan ulangi pertanyaan yang diberikan (pastikan yukino tidak dingin ketika berbicara dengan Cryelzynn",
     });
     const user =
       message.author.username === "lynz727wysi"
@@ -67,7 +37,7 @@ module.exports = {
 
       // Generate a response using OpenAI
       const result = await model.generateContent(
-        `Conversation Context:\n${contextString}\n\n`
+        `Conversation Context:\n${contextString}\n\n``${user}:\n${prompt}`
       );
 
       // Send the AI-generated response
