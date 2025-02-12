@@ -1,38 +1,9 @@
 require("dotenv/config");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
+const splitMessage = require("../utils/splitMessage");
+const { getUserName } = require("../utils/getUserName");
 
 const conversationMemory = new Map();
-
-function splitMessage(message, maxLength = 2000) {
-  // If the message is already short enough, return it as-is
-  if (message.length <= maxLength) {
-    return [message];
-  }
-
-  const messages = [];
-  let currentMessage = "";
-
-  // Split the message into lines to preserve code block formatting
-  const lines = message.split("\n");
-
-  for (const line of lines) {
-    // If adding this line would exceed the max length, start a new message
-    if ((currentMessage + "\n" + line).length > maxLength) {
-      messages.push(currentMessage.trim());
-      currentMessage = "";
-    }
-
-    // Add the line to the current message
-    currentMessage += (currentMessage ? "\n" : "") + line;
-  }
-
-  // Add the last message if it's not empty
-  if (currentMessage) {
-    messages.push(currentMessage.trim());
-  }
-
-  return messages;
-}
 
 module.exports = {
   data: {
@@ -44,11 +15,7 @@ module.exports = {
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
 
     const channelId = message.channel.id;
-    const user =
-      message.author.username === "lynz727wysi"
-        ? "Eguin"
-        : message.author.globalName;
-
+    const user = getUserName(message);
     if (!conversationMemory.has(channelId)) {
       conversationMemory.set(channelId, []);
     }
@@ -87,7 +54,7 @@ module.exports = {
         { sender: "Bocchi", content: aiResponse }
       );
     } catch (error) {
-      console.error("OpenAI API error:", error);
+      console.error("Gemini API error:", error);
       await message.channel.send(
         "Sorry, something went wrong with the AI generation."
       );

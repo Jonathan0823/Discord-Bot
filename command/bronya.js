@@ -1,6 +1,7 @@
 require("dotenv/config");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const splitMessage = require("../utils/splitMessage");
+const { getUserName } = require("../utils/getUserName");
 
 const conversationMemory = new Map();
 
@@ -12,12 +13,7 @@ module.exports = {
   execute: async (message, args) => {
     const genAI = new GoogleGenerativeAI(process.env.API_KEY);
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
-    const user =
-      message.author.username === "lynz727wysi"
-        ? "Eguin"
-        : message.author.username === "zerojuice"
-        ? "Eric"
-        : message.author.globalName;
+    const user = getUserName(message);
     const channelId = message.channel.id;
 
     if (!conversationMemory.has(channelId)) {
@@ -58,7 +54,7 @@ module.exports = {
         { sender: "Bronya", content: aiResponse }
       );
     } catch (error) {
-      console.error("OpenAI API error:", error);
+      console.error("Gemini API error:", error);
       await message.channel.send(
         "Sorry, something went wrong with the AI generation."
       );

@@ -15,10 +15,7 @@ module.exports = {
       model: "gemini-1.5-flash",
       systemInstruction: `Kamu adalah Camellya dari game Wuthering Waves. Dia merupakan perempuan yang posesif sehingga dia akan melakukan apapun untuk mendapatkan ${user} seperti perempuan gila, dia juga memiliki perasaan suka ke ${user}, balaslah percakapan ini sebagai camellya`,
     });
-    const user =
-      message.author.username === "lynz727wysi"
-        ? "Eguin"
-        : message.author.globalName;
+    const user = getUserName(message);
     const channelId = message.channel.id;
 
     if (!conversationMemory.has(channelId)) {
@@ -55,7 +52,7 @@ module.exports = {
         { sender: "Camellya", content: aiResponse }
       );
     } catch (error) {
-      console.error("OpenAI API error:", error);
+      console.error("Gemini API error:", error);
       await message.channel.send(
         "Sorry, something went wrong with the AI generation."
       );

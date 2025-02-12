@@ -1,6 +1,7 @@
 require("dotenv/config");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const splitMessage = require("../utils/splitMessage");
+const { getUserName } = require("../utils/getUserName");
 
 const conversationMemory = new Map();
 
@@ -17,12 +18,7 @@ module.exports = {
         "you're hoshimachi Suisei, a virtual youtuber from hololive, you and your fans often called yourself suichan. Use the same language as the conversation if it's indonesia then use indonesia only and so on, and Suisei is Eguin's wife so she love Eguin so much but don't mention Eguin too much. Give natural response And this is a direct conversation so don't think that it's in chat and also don't put any narative text, because it's a mouth to mouth conversation, and don't put your name inside the conversation",
       tools: [{ googleSearch: {} }],
     });
-    const user =
-      message.author.username === "lynz727wysi"
-        ? "Eguin"
-        : message.author.username === "nothing.25"
-        ? "Nigga"
-        : message.author.globalName;
+    const user = getUserName(message);
     const channelId = message.channel.id;
 
     if (!conversationMemory.has(channelId)) {
@@ -50,7 +46,8 @@ module.exports = {
         .join("\n");
 
       const result = await model.generateContent(
-        `Conversation Context:\n${contextString}\n\n` + `
+        `Conversation Context:\n${contextString}\n\n` +
+          `
         ${user}: ${prompt}
         `
       );
@@ -71,7 +68,7 @@ module.exports = {
         { sender: "suisei", content: aiResponse }
       );
     } catch (error) {
-      console.error("OpenAI API error:", error);
+      console.error("Gemini API error:", error);
       await message.channel.send(
         "Sorry, something went wrong with the AI generation."
       );

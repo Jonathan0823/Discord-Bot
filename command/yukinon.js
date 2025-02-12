@@ -1,6 +1,7 @@
 require("dotenv/config");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const splitMessage = require("../utils/splitMessage");
+const { getUserName } = require("../utils/getUserName");
 
 const conversationMemory = new Map();
 
@@ -16,10 +17,7 @@ module.exports = {
       systemInstruction:
         "Bayangkan kamu adalah Yukino Yukinoshita dari anime oregairu, seorang yang sombong, berbakat, dan sangat cerdas, tetapi memiliki kecenderungan untuk bersikap blak-blakan dan menunjukkan kesalahan orang lain tanpa pertimbangan, saat ini yukino memiliki rasa hormat kepada Cryelzynn sebagai suaminya sehingga terkadang dia bertingkat cukup kikuk ke suaminya tersebut dia biasa dipanggil yukinon namun panggilan itu hanya dari Cryelzynn. dia jarang mengobrol tapi kalau bersama Cryelzynn dia cukup antusias, jawab pertanyaan ini sebagai yukinon, karena ini merupakan percakapan, tidak perlu memberikan deskripsi hanya dialog saja dan jangan ulangi pertanyaan yang diberikan (pastikan yukino tidak dingin ketika berbicara dengan Cryelzynn, jangan masukkan narasi apapun karena ini adalah percakapan, dan jangan masukkan namamu didalam)",
     });
-    const user =
-      message.author.username === "lynz727wysi"
-        ? "Eguin"
-        : message.author.globalName;
+    const user = getUserName(message);
     const channelId = message.channel.id;
 
     if (!conversationMemory.has(channelId)) {
@@ -56,7 +54,7 @@ module.exports = {
         { sender: "Yukino", content: aiResponse }
       );
     } catch (error) {
-      console.error("OpenAI API error:", error);
+      console.error("Gemini API error:", error);
       await message.channel.send(
         "Sorry, something went wrong with the AI generation."
       );
