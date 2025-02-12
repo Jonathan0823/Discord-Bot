@@ -1,7 +1,7 @@
 require("dotenv/config");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
-const splitMessage = require("./splitMessage");
-const { getUserName } = require("./getUserName");
+const splitMessage = require("../helper/splitMessage");
+const { getUserName } = require("../helper/getUserName");
 
 const conversationMemory = new Map();
 
@@ -44,7 +44,9 @@ async function aiResponder(message, args, systemInstruction, commandName) {
       .join("\n");
 
     const result = await model.generateContent(
-      `Conversation Context:\n${contextString}\n\n${user}: ${prompt}`
+      `Conversation Context:\n${contextString}\n\n
+      from ${user}: ${prompt}
+      `
     );
 
     const aiResponse = result.response.text();
@@ -61,7 +63,9 @@ async function aiResponder(message, args, systemInstruction, commandName) {
     );
   } catch (error) {
     console.error("Gemini API error:", error);
-    await message.channel.send("Sorry, something went wrong with the AI generation.");
+    await message.channel.send(
+      "Sorry, something went wrong with the AI generation."
+    );
   }
 }
 
