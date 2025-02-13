@@ -2,6 +2,7 @@ require("dotenv/config");
 const { GoogleGenerativeAI } = require("@google/generative-ai");
 const splitMessage = require("../helper/splitMessage");
 const { getUserName } = require("../helper/getUserName");
+const titleCase = require("../helper/titleCase");
 
 const conversationMemory = new Map();
 
@@ -26,7 +27,7 @@ async function aiResponder(message, args, systemInstruction, commandName) {
 
   try {
     const isNotEmpty = args.length > 0;
-    const prompt = isNotEmpty ? args.join(" ") : "Hi there!";
+    const prompt = isNotEmpty ? args.join(" ") : `Halo, ${titleCase(commandName)}!`;
 
     if (!isNotEmpty) {
       conversationMemory.set(memoryKey, []);
