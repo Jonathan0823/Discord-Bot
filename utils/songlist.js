@@ -24,7 +24,8 @@ const songs = [
   "繭と心",
   "ビーナスバグ",
   "Orbital Period",
-  "もうどうなってもいいや"
+  "もうどうなってもいいや",
+  "ジュビリー"
 ];
 
 module.exports = {
