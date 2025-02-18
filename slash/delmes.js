@@ -6,13 +6,20 @@ const {
 
 module.exports = {
   data: new SlashCommandBuilder()
-    .setName("purgeall")
+    .setName("delmes")
     .setDescription(
-      "Purge all messages in the channel (max 100, within 14 days)"
+      "Delete all messages in the channel (max 100, within 14 days)"
+    )
+    .addIntegerOption((option) =>
+      option
+        .setName("amount")
+        .setDescription("Number of messages to delete max 100")
+        .setRequired(true)
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
 
   async execute(interaction) {
+    const amount = interaction.options.getInteger("amount");
     try {
       await interaction.deferReply({
         flags: MessageFlagsBitField.Flags.Ephemeral,
@@ -26,7 +33,10 @@ module.exports = {
         );
       }
 
-      const messages = await interaction.channel.messages.fetch({ limit: 100 });
+      const messages = await interaction.channel.messages.fetch(
+        { limit: amount },
+        true
+      );
 
       const twoWeeksAgo = Date.now() - 14 * 24 * 60 * 60 * 1000;
       const filteredMessages = messages.filter(
@@ -41,7 +51,7 @@ module.exports = {
 
       await interaction.channel.bulkDelete(filteredMessages, true);
       await interaction.editReply(
-        `Purged ${filteredMessages.size} messages from the last 14 days!`
+        `Deleted ${filteredMessages.size} messages from the last 14 days!`
       );
     } catch (error) {
       console.error("Error processing the purgeall command:", error);
