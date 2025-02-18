@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require("discord.js");
+const { SlashCommandBuilder, MessageFlagsBitField } = require("discord.js");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -12,7 +12,7 @@ module.exports = {
     if (sender !== "lynz727wysi") {
       await interaction.reply({
         content: "You are not authorized to use this command.",
-        ephemeral: true,
+        flags: MessageFlagsBitField.Flags.Ephemeral,
       });
       return;
     }
@@ -21,7 +21,7 @@ module.exports = {
       await interaction.reply({
         content:
           "Please enter the message you want to send. Type 'c' to cancel.",
-        ephemeral: true,
+        flags: MessageFlagsBitField.Flags.Ephemeral,
       });
 
       const messageFilter = (m) => m.author.id === interaction.user.id;
@@ -67,7 +67,9 @@ module.exports = {
       const ArrayChannelId = channelId.split(" ");
 
       ArrayChannelId.forEach(async (channelId) => {
-       const targetChannel = await interaction.client.channels.fetch(channelId);
+        const targetChannel = await interaction.client.channels.fetch(
+          channelId
+        );
         if (!targetChannel || !targetChannel.isTextBased()) {
           await interaction.editReply(
             "Error: The provided channel ID is invalid."

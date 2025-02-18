@@ -1,4 +1,4 @@
-const { EmbedBuilder } = require("discord.js");
+const { EmbedBuilder, MessageFlagsBitField } = require("discord.js");
 const { SlashCommandBuilder } = require("discord.js");
 const { getRandomColor } = require("../helper/randomColor");
 
@@ -35,7 +35,7 @@ module.exports = {
       if (!interaction.replied) {
         await interaction.reply({
           content: "An error occurred while processing your command!",
-          ephemeral: true,
+          flags: MessageFlagsBitField.Flags.Ephemeral,
         });
       }
     }

@@ -8,6 +8,7 @@ const {
   REST,
   Routes,
   ActivityType,
+  MessageFlagsBitField,
 } = require("discord.js");
 const client = new Client({
   intents: [
@@ -163,7 +164,7 @@ const executeCommand = async (interaction, isSlash = true) => {
           if (!interaction.replied && !interaction.deferred) {
             await interaction.reply({
               content: "There was an error executing this command!",
-              ephemeral: true,
+              flags: MessageFlagsBitField.Flags.Ephemeral,
             });
           }
           return true;
