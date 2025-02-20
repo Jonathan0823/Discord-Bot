@@ -36,7 +36,7 @@ module.exports = {
 
       if (messageContent.toLowerCase() === "c") {
         await interaction.editReply("Command cancelled.");
-        collectedChannel.first().delete();
+        collectedMessage.first().delete();
         return;
       }
 
