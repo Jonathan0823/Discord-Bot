@@ -10,7 +10,7 @@ async function aiResponder(message, args, systemInstruction, commandName) {
   const genAI = new GoogleGenerativeAI(process.env.API_KEY);
   const model = genAI.getGenerativeModel({
     model: "gemini-2.0-flash",
-    systemInstruction: `${systemInstruction}. the timezone is Asia/Jakarta or UTC +7`,
+    systemInstruction: `${systemInstruction}. the timezone is Asia/Jakarta or UTC +7 and don't include any conversation context and user's prompt in the response`,
     tools: [{ googleSearch: {} }],
   });
 
