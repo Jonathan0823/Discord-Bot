@@ -8,18 +8,21 @@ module.exports = {
   data: new SlashCommandBuilder()
     .setName("delmes")
     .setDescription(
-      "Delete all messages in the channel (max 100, within 14 days)"
+      "Delete all messages in the channel (max 100 per batch, within 14 days)"
     )
-    .addIntegerOption((option) =>
+    .addStringOption((option) =>
       option
         .setName("amount")
-        .setDescription("Number of messages to delete max 100")
+        .setDescription(
+          "Number of messages to delete, max 100 per batch, or 'all'"
+        )
         .setRequired(true)
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
 
   async execute(interaction) {
-    const amount = interaction.options.getInteger("amount");
+    let amount = interaction.options.getString("amount");
+
     try {
       await interaction.deferReply({
         flags: MessageFlagsBitField.Flags.Ephemeral,
@@ -33,29 +36,41 @@ module.exports = {
         );
       }
 
-      const messages = await interaction.channel.messages.fetch(
-        { limit: amount },
-        true
-      );
-
       const twoWeeksAgo = Date.now() - 14 * 24 * 60 * 60 * 1000;
-      const filteredMessages = messages.filter(
-        (msg) => msg.createdTimestamp > twoWeeksAgo
-      );
+      let totalDeleted = 0;
+      let hasMore = true;
 
-      if (filteredMessages.size === 0) {
-        return interaction.editReply(
-          "No messages found within the last 14 days to delete."
+      while (hasMore) {
+        const fetchAmount = amount === "all" ? 100 : parseInt(amount, 10);
+        if (isNaN(fetchAmount) || fetchAmount <= 0) {
+          return interaction.editReply("Invalid amount specified.");
+        }
+
+        const messages = await interaction.channel.messages.fetch({
+          limit: fetchAmount,
+        });
+        const filteredMessages = messages.filter(
+          (msg) => msg.createdTimestamp > twoWeeksAgo
         );
+
+        if (filteredMessages.size === 0) {
+          hasMore = false;
+          break;
+        }
+
+        await interaction.channel.bulkDelete(filteredMessages, true);
+        totalDeleted += filteredMessages.size;
+
+        if (amount !== "all" || filteredMessages.size < fetchAmount) {
+          hasMore = false;
+        }
       }
 
-      await interaction.channel.bulkDelete(filteredMessages, true);
       await interaction.editReply(
-        `Deleted ${filteredMessages.size} messages from the last 14 days!`
+        `Deleted ${totalDeleted} messages from the last 14 days!`
       );
     } catch (error) {
-      console.error("Error processing the purgeall command:", error);
-
+      console.error("Error processing the delmes command:", error);
       if (!interaction.replied) {
         await interaction.editReply(
           "An error occurred while processing your command!"
