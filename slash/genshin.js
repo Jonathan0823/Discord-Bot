@@ -9,7 +9,6 @@ module.exports = {
       option
         .setName("id")
         .setDescription("The ID of the account you want to view")
-        .setRequired(true)
     ),
   async execute(interaction) {
     await hoyoContainer(

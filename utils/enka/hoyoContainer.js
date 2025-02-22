@@ -1,6 +1,6 @@
 const { MessageFlagsBitField, EmbedBuilder } = require("discord.js");
 const { Wrapper } = require("enkanetwork.js");
-const { getRandomColor } = require("../helper/randomColor");
+const { getRandomColor } = require("../../helper/randomColor");
 const { getHoyoAssetsfromURL } = require("./getHoyoAssetsfromURL");
 
 async function hoyoContainer(message, type, id) {
@@ -15,8 +15,6 @@ async function hoyoContainer(message, type, id) {
   try {
     const response = await wrapper[type].getPlayer(id);
     console.log(response);
-
-    console.log(response.player.profilePicture.assets);
 
     const profilePicture = await getHoyoAssetsfromURL(
       type,
