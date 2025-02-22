@@ -1,5 +1,7 @@
-const { MessageFlagsBitField } = require("discord.js");
+const { MessageFlagsBitField, EmbedBuilder } = require("discord.js");
 const { Wrapper } = require("enkanetwork.js");
+const { getRandomColor } = require("../helper/randomColor");
+const { getHoyoAssetsfromURL } = require("./getHoyoAssetsfromURL");
 
 async function hoyoContainer(message, type, id) {
   const wrapper = new Wrapper({
@@ -12,7 +14,33 @@ async function hoyoContainer(message, type, id) {
 
   try {
     const response = await wrapper[type].getPlayer(id);
-    await message.editReply(response.player?.username);
+    console.log(response);
+
+    console.log(response.player.profilePicture.assets);
+
+    const profilePicture = await getHoyoAssetsfromURL(
+      type,
+      response.player.profilePicture.assets.oldIcon ||
+        response.player.profilePicture.assets.icon
+    );
+
+    const embed = new EmbedBuilder()
+      .setColor(getRandomColor())
+      .setTitle(type === "genshin" ? "Genshin Impact" : "Honkai Star Rail")
+      .setThumbnail(profilePicture)
+      .setDescription(
+        `
+        Name: ${response.player?.username}
+        UID: ${response?.uid}   
+        World Level: ${response?.player.levels.world}
+        Adventure Rank: ${response?.player.levels.rank}
+        Achievements: ${response?.player.achievements}
+        Latest Abyss: Floor ${response.player.abyss.floor} Chamber ${response.player.abyss.chamber}, ${response.player.abyss.stars} Stars
+        `
+      );
+
+    message.deleteReply();
+    await message.channel.send({ embeds: [embed] });
   } catch (error) {
     console.error("Error processing the hoyoContainer command:", error);
     await message.editReply("An error occurred while processing the command.");
