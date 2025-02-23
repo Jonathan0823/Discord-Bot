@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require("discord.js");
+const { hoyoContainer } = require("../utils/enka/hoyoContainer");
 
 module.exports = {
   data: new SlashCommandBuilder()
