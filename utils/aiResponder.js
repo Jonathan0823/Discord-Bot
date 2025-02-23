@@ -15,10 +15,11 @@ async function aiResponder(message, args, systemInstruction, commandName) {
   });
 
   const user = getUserName(message);
-  const channelId = message.channel.id;
+  const guildId = message.guildId;
 
-  // Use a combination of channelId and commandName for namespacing
-  const memoryKey = `${channelId}-${commandName}`;
+
+  // Use a combination of guildId and commandName for namespacing
+  const memoryKey = `${guildId}-${commandName}`;
 
   if (!conversationMemory.has(memoryKey)) {
     conversationMemory.set(memoryKey, []);
@@ -27,7 +28,9 @@ async function aiResponder(message, args, systemInstruction, commandName) {
 
   try {
     const isNotEmpty = args.length > 0;
-    const prompt = isNotEmpty ? args.join(" ") : `Halo, ${titleCase(commandName)}!`;
+    const prompt = isNotEmpty
+      ? args.join(" ")
+      : `Halo, ${titleCase(commandName)}!`;
 
     if (!isNotEmpty) {
       conversationMemory.set(memoryKey, []);
