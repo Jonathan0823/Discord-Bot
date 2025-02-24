@@ -25,7 +25,15 @@ const songs = [
   "ビーナスバグ",
   "Orbital Period",
   "もうどうなってもいいや",
-  "ジュビリー"
+  "ジュビリー",
+  "Template",
+  "レクイエム",
+  "The Last Frontier",
+  "シュガーラッシュ",
+  "Capsule",
+  "Out of Frame",
+  "自分勝手Dazzling",
+  "駆けろ",
 ];
 
 module.exports = {
