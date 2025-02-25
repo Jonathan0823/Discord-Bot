@@ -1,5 +1,9 @@
-const { SlashCommandBuilder, MessageFlagsBitField } = require("discord.js");
-const { downloadImage } = require("../helper/downloadImage");
+const {
+  SlashCommandBuilder,
+  MessageFlagsBitField,
+  AttachmentBuilder,
+} = require("discord.js");
+const { downloadFile } = require("../helper/downloadFile");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -43,12 +47,15 @@ module.exports = {
 
       const attachments = collectedMessage
         .first()
-        .attachments.map((attachment) => attachment.url);
+        .attachments.map((attachment) => ({
+          url: attachment.url,
+          name: attachment.name,
+        }));
 
       const downloadedImages = await Promise.all(
-        attachments.map(async (url) => {
-          const imageBuffer = await downloadImage(url);
-          return { attachment: imageBuffer, name: "image.png" };
+        attachments.map(async ({ url, name }) => {
+          const fileBuffer = await downloadFile(url);
+          return new AttachmentBuilder(fileBuffer, { name });
         })
       );
 
