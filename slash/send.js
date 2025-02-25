@@ -1,4 +1,5 @@
 const { SlashCommandBuilder, MessageFlagsBitField } = require("discord.js");
+const { downloadImage } = require("../helper/downloadImage");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -40,6 +41,17 @@ module.exports = {
         return;
       }
 
+      const attachments = collectedMessage
+        .first()
+        .attachments.map((attachment) => attachment.url);
+
+      const downloadedImages = await Promise.all(
+        attachments.map(async (url) => {
+          const imageBuffer = await downloadImage(url);
+          return { attachment: imageBuffer, name: "image.png" };
+        })
+      );
+
       await collectedMessage.first().delete();
 
       await interaction.editReply({
@@ -77,7 +89,10 @@ module.exports = {
           return;
         }
 
-        await targetChannel.send(messageContent);
+        await targetChannel.send({
+          content: messageContent,
+          files: downloadedImages || undefined,
+        });
       });
 
       await interaction.editReply("Message sent successfully!");
