@@ -5,11 +5,16 @@ function splitMessage(message, maxLength = 2000) {
 
   const messages = [];
   let currentMessage = "";
+  let inCodeBlock = false;
 
   const lines = message.split("\n");
 
   for (const line of lines) {
-    if ((currentMessage + "\n" + line).length > maxLength) {
+    if (line.startsWith("```")) {
+      inCodeBlock = !inCodeBlock;
+    }
+
+    if (!inCodeBlock && (currentMessage + "\n" + line).length > maxLength) {
       messages.push(currentMessage.trim());
       currentMessage = "";
     }
