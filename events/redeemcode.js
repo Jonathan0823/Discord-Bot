@@ -7,7 +7,7 @@ const AUTHORIZED_USER = "lynz727wysi";
 const CHANNEL_CONFIG = {
   "1337568739415167057": { game: "gi", name: "Genshin Impact" },
   "1337568755462701177": { game: "hsr", name: "Honkai Star Rail" },
-  "1337568767395364938": { game: "zzz", name: "Zenless Zone" },
+  "1337568767395364938": { game: "zzz", name: "Zenless Zone Zero" },
 };
 
 const OUTPUT_CHANNEL_GI = process.env.REDEEM_CHANNEL_GI.split(",");
