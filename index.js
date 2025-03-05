@@ -19,7 +19,7 @@ const client = new Client({
 });
 const { setupDailyAlarm, triggerAlarm } = require("./utils/alarm");
 const { songs } = require("./utils/songlist");
-const { triggerWords } = require("./events/triggerWord");
+const { triggerWords, loadTriggerWords } = require("./events/triggerWord");
 
 client.on("ready", async () => {
   const targetChannelId = [
@@ -28,6 +28,7 @@ client.on("ready", async () => {
   ];
 
   setupDailyAlarm(client, targetChannelId, "hoyo");
+  await loadTriggerWords();
 
   client.user.setActivity("新星目録", {
     type: ActivityType.Listening,

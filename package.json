@@ -12,10 +12,14 @@
   "description": "",
   "dependencies": {
     "@google/generative-ai": "^0.21.0",
+    "@prisma/client": "^6.4.1",
     "discord.js": "^14.16.3",
     "dotenv": "^16.4.7",
     "enkanetwork.js": "^2.10.4",
     "express": "^4.21.2",
     "node-cron": "^3.0.3"
+  },
+  "devDependencies": {
+    "prisma": "^6.4.1"
   }
 }
