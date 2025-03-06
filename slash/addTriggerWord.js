@@ -17,6 +17,16 @@ module.exports = {
     ),
 
   async execute(interaction) {
+    const sender = interaction.user.username;
+
+    if (sender !== "lynz727wysi") {
+      await interaction.reply({
+        content: "You are not authorized to use this command.",
+        flags: MessageFlagsBitField.Flags.Ephemeral,
+      });
+      return;
+    }
+
     const word = interaction.options.getString("word");
     const key = interaction.options.getString("key");
     const triggerWord =
@@ -29,7 +39,7 @@ module.exports = {
     const wordExists = triggerWord !== null;
 
     if (wordExists) {
-      return await interaction.reply({
+      return interaction.reply({
         content: `The word "${word}" is already in the list!`,
         flags: MessageFlagsBitField.Flags.Ephemeral,
       });

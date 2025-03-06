@@ -14,6 +14,16 @@ module.exports = {
     ),
 
   async execute(interaction) {
+    const sender = interaction.user.username;
+
+    if (sender !== "lynz727wysi") {
+      await interaction.reply({
+        content: "You are not authorized to use this command.",
+        flags: MessageFlagsBitField.Flags.Ephemeral,
+      });
+      return;
+    }
+
     const channelId = interaction.options.getString("channelid");
     const alarmId =
       (await prisma.alarmChannel.findUnique({
@@ -38,7 +48,7 @@ module.exports = {
       });
     } catch (error) {
       console.error("Error adding channel ID:", error);
-      return await interaction.reply({
+      return interaction.reply({
         content: `There was an error adding the channel ID "${channelId}"!`,
         flags: MessageFlagsBitField.Flags.Ephemeral,
       });
