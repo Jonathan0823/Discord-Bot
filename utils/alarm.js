@@ -6,41 +6,57 @@ const {
 } = require("discord.js");
 const cron = require("node-cron");
 const { getRandomColor } = require("../helper/randomColor");
+const { prisma } = require("../lib/prisma");
 
-function setupDailyAlarm(client, channelId, type) {
+let channelId = [];
+let scheduledJobs = {};
+
+const loadAlarmId = async () => {
+  try {
+    channelId = [];
+    const ids = await prisma.alarmChannel.findMany();
+    channelId = ids.map((id) => id.channelId);
+
+    console.log("Alarm IDs loaded successfully.");
+    return channelId;
+  } catch (error) {
+    console.error("Error fetching alarm IDs:", error);
+    return [];
+  }
+};
+
+function setupDailyAlarm(client, type) {
   console.log(
     "Setting up daily alarm for " + channelId + " with type: " + type
   );
-  if (type === "hoyo") {
-    cron.schedule(
-      "0 4 * * *",
-      async () => {
-        await triggerAlarm(client, channelId, type);
-      },
-      {
-        timezone: "Asia/Jakarta",
-      }
-    );
-  } else {
-    cron.schedule(
-      "0 3 * * *",
-      async () => {
-        await triggerAlarm(client, channelId, type);
-      },
-      {
-        timezone: "Asia/Jakarta",
-      }
-    );
+
+  if (scheduledJobs[type]) {
+    scheduledJobs[type].stop(); // Stop previous job
+    console.log(`Previous cron job for ${type} stopped.`);
   }
+
+  const schedule = type === "hoyo" ? "0 4 * * *" : "0 3 * * *";
+
+  scheduledJobs[type] = cron.schedule(
+    schedule,
+    async () => {
+      await triggerAlarm(client, channelId, type);
+    },
+    {
+      timezone: "Asia/Jakarta",
+    }
+  );
+
+  console.log(`New cron job for ${type} started.`);
 }
 
-async function triggerAlarm(client, channelId, type) {
-  if (!Array.isArray(channelId)) {
+async function triggerAlarm(client, channelIds, type) {
+  if (!Array.isArray(channelIds)) {
     console.error("channelId must be an array of IDs.");
     return;
   }
 
-  for (const id of channelId) {
+  for (const id of channelIds) {
     const maxRetries = 3;
     let attempts = 0;
     let success = false;
@@ -147,4 +163,5 @@ async function triggerAlarm(client, channelId, type) {
 module.exports = {
   setupDailyAlarm,
   triggerAlarm,
+  loadAlarmId,
 };

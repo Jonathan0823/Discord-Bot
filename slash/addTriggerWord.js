@@ -25,7 +25,7 @@ module.exports = {
     );
 
     if (wordExists) {
-      return interaction.reply({
+      return await interaction.reply({
         content: `The word "${word}" is already in the list!`,
         flags: MessageFlagsBitField.Flags.Ephemeral,
       });

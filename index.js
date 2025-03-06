@@ -17,18 +17,15 @@ const client = new Client({
     GatewayIntentBits.MessageContent,
   ],
 });
-const { setupDailyAlarm, triggerAlarm } = require("./utils/alarm");
+const { setupDailyAlarm, triggerAlarm, loadAlarmId } = require("./utils/alarm");
 const { songs } = require("./utils/songlist");
 const { triggerWords, loadTriggerWords } = require("./events/triggerWord");
 
 client.on("ready", async () => {
-  const targetChannelId = [
-    process.env.TARGET_CHANNEL_ID,
-    process.env.TARGET_CHANNEL_ID2,
-  ];
-
-  setupDailyAlarm(client, targetChannelId, "hoyo");
+  await loadAlarmId();
   await loadTriggerWords();
+
+  setupDailyAlarm(client, "hoyo");
 
   client.user.setActivity("新星目録", {
     type: ActivityType.Listening,
