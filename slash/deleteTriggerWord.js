@@ -1,5 +1,6 @@
 const { SlashCommandBuilder, MessageFlagsBitField } = require("discord.js");
 const { prisma } = require("../lib/prisma");
+const { loadTriggerWords } = require("../events/triggerWord");
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -31,6 +32,9 @@ module.exports = {
           key,
         },
       });
+
+      await loadTriggerWords();
+
     } catch (err) {
       console.error(err);
       await interaction.reply({
