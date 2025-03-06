@@ -19,10 +19,14 @@ module.exports = {
   async execute(interaction) {
     const word = interaction.options.getString("word");
     const key = interaction.options.getString("key");
-    const triggerWords = await prisma.triggerWord.findMany();
-    const wordExists = triggerWords.some(
-      (triggerWord) => triggerWord.word === word
-    );
+    const triggerWord =
+      (await prisma.triggerWord.findUnique({
+        where: {
+          key,
+        },
+      })) || null;
+
+    const wordExists = triggerWord !== null;
 
     if (wordExists) {
       return await interaction.reply({
