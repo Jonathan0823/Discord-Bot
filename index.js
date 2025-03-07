@@ -18,7 +18,7 @@ const client = new Client({
   ],
 });
 const { setupDailyAlarm, triggerAlarm, loadAlarmId } = require("./utils/alarm");
-const { loadSong } = require("./utils/songlist");
+const { updateSongList, getSong } = require("./utils/songlist");
 const { triggerWords, loadTriggerWords } = require("./events/triggerWord");
 
 client.on("ready", async () => {
@@ -33,9 +33,10 @@ client.on("ready", async () => {
 
   console.log(`Logged in as ${client.user.tag}!`);
 
-  let songs = await loadSong();
+  await updateSongList();
 
   setInterval(() => {
+    const songs = getSong();
     const randomSong = songs[Math.floor(Math.random() * songs.length)];
     client.user.setActivity(randomSong, {
       type: ActivityType.Listening,

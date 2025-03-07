@@ -1,5 +1,5 @@
 const { prisma } = require("../lib/prisma");
-const { loadSong } = require("../utils/songlist");
+const { updateSongList } = require("../utils/songlist");
 
 const channelId = "1347471345356767294";
 module.exports = {
@@ -19,7 +19,7 @@ module.exports = {
         },
       });
 
-      await loadSong();
+      await updateSongList();
 
       await message.react("✅");
     } catch (err) {
