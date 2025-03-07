@@ -14,6 +14,5 @@ const loadSong = async () => {
 };
 
 module.exports = {
-  songs,
   loadSong,
 };
