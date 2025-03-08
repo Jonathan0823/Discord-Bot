@@ -27,6 +27,21 @@ module.exports = {
     const key = interaction.options.getString("key");
 
     try {
+      const triggerWord = await prisma.triggerWord.findUnique({
+        where: {
+          key,
+        },
+      });
+
+      if (!triggerWord) {
+        await interaction.reply({
+          content: `The trigger word "${key}" does not exist.`,
+          flags: MessageFlagsBitField.Flags.Ephemeral,
+        });
+
+        return;
+      }
+
       await prisma.triggerWord.delete({
         where: {
           key,
@@ -35,12 +50,20 @@ module.exports = {
 
       await loadTriggerWords();
 
+      await interaction.reply({
+        content: `The trigger word "${key}" has been deleted.`,
+        flags: MessageFlagsBitField.Flags.Ephemeral,
+      });
     } catch (err) {
       console.error(err);
       await interaction.reply({
         content: "There was an error deleting the trigger word.",
         flags: MessageFlagsBitField.Flags.Ephemeral,
       });
+    } finally {
+      setTimeout(() => {
+        interaction.deleteReply();
+      }, 3000);
     }
   },
 };
