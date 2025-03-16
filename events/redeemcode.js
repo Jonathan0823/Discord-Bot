@@ -108,16 +108,18 @@ ${codes
         );
 
       // Send to all output channels
-      for (const channelId of getCodeChannels(gameType)) {
-        try {
-          const targetChannel = await message.client.channels.fetch(channelId);
-          if (targetChannel && targetChannel.isTextBased()) {
-            await targetChannel.send({ embeds: [embed] });
+      await Promise.all(
+        getCodeChannels(gameType).map(async (channelId) => {
+          try {
+            const targetChannel = await message.client.channels.fetch(channelId);
+            if (targetChannel && targetChannel.isTextBased()) {
+              await targetChannel.send({ embeds: [embed] });
+            }
+          } catch (error) {
+            console.error(`Failed to send to channel ${channelId}:`, error);
           }
-        } catch (error) {
-          console.error(`Failed to send to channel ${channelId}:`, error);
-        }
-      }
+        })
+      );
     } catch (error) {
       console.error("Error processing message:", error);
       await message.reply(
