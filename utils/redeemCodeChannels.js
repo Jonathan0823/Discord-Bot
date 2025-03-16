@@ -8,7 +8,8 @@ const loadCodeChannels = async () => {
   const data = await prisma.codeChannel.findMany();
   codeChannels = data;
 
-  console.table("Loaded code channels:", codeChannels);
+  console.log("Loaded code channels:");
+  console.table(codeChannels);
 }
 
 const getCodeChannels = (gameType) => {
