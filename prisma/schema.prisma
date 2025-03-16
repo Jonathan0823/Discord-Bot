@@ -42,3 +42,13 @@ model SongList {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 }
+
+model CodeChannel {
+    id       String   @id @default(cuid())
+    channelId String
+    gameType  String
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@unique([channelId, gameType])
+  }

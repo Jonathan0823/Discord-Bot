@@ -1,6 +1,7 @@
 require("dotenv/config");
 const { EmbedBuilder } = require("discord.js");
 const { getRandomColor } = require("../helper/randomColor");
+const { getCodeChannels } = require("../utils/redeemCodeChannels");
 
 const AUTHORIZED_USER = "lynz727wysi";
 
@@ -9,10 +10,6 @@ const CHANNEL_CONFIG = {
   "1337568755462701177": { game: "hsr", name: "Honkai Star Rail" },
   "1337568767395364938": { game: "zzz", name: "Zenless Zone Zero" },
 };
-
-const OUTPUT_CHANNEL_GI = process.env.REDEEM_CHANNEL_GI.split(",");
-const OUTPUT_CHANNEL_HSR = process.env.REDEEM_CHANNEL_HSR.split(",");
-const OUTPUT_CHANNEL_ZZZ = process.env.REDEEM_CHANNEL_ZZZ.split(",");
 
 const link = {
   gi: "https://genshin.hoyoverse.com/en/gift?code=",
@@ -91,33 +88,27 @@ module.exports = {
           "https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExamJxbmZlc296ZWN5cnFuaDdoY2Z5cXBpbm9hdnhieW00em01NHRqOSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/hQaCjkWd8y86EtipeI/giphy.gif"
         )
         .setDescription(
-          `Halo ${
-            gameType === "gi"
-              ? "Traveler"
-              : gameType === "hsr"
+          `Halo ${gameType === "gi"
+            ? "Traveler"
+            : gameType === "hsr"
               ? "Trailblazer"
               : "Proxy"
           }, ada kode redeem baru nih! Yuk segera di redeem!
 
 **Redeem Codes:**
 ${codes
-  .map(
-    (entry) =>
-      `\`${entry.code.padEnd(maxCodeLength)}\` ・ **\`${entry.value.padEnd(
-        maxValueLength
-      )}\`** ${getCurrencyEmoji(gameType)} → [Link](${link[gameType]}${
-        entry.code
-      })`
-  )
-  .join("\n")}`
+            .map(
+              (entry) =>
+                `\`${entry.code.padEnd(maxCodeLength)}\` ・ **\`${entry.value.padEnd(
+                  maxValueLength
+                )}\`** ${getCurrencyEmoji(gameType)} → [Link](${link[gameType]}${entry.code
+                })`
+            )
+            .join("\n")}`
         );
 
       // Send to all output channels
-      for (const channelId of gameType === "gi"
-        ? OUTPUT_CHANNEL_GI
-        : gameType === "hsr"
-        ? OUTPUT_CHANNEL_HSR
-        : OUTPUT_CHANNEL_ZZZ) {
+      for (const channelId of getCodeChannels(gameType)) {
         try {
           const targetChannel = await message.client.channels.fetch(channelId);
           if (targetChannel && targetChannel.isTextBased()) {

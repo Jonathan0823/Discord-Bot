@@ -20,10 +20,12 @@ const client = new Client({
 const { setupDailyAlarm, triggerAlarm, loadAlarmId } = require("./utils/alarm");
 const { updateSongList, getSong } = require("./utils/songlist");
 const { triggerWords, loadTriggerWords } = require("./events/triggerWord");
+const { loadCodeChannels } = require("./utils/redeemCodeChannels");
 
 client.on("ready", async () => {
   await loadAlarmId();
   await loadTriggerWords();
+  await loadCodeChannels();
 
   setupDailyAlarm(client, "hoyo");
 
