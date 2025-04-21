@@ -2,7 +2,7 @@ const { prisma } = require("../lib/prisma");
 
 let codeChannels = [];
 
-const allowedGameTypes = ["gi", "hsr", "zzz"];
+const allowedGameTypes = ["gi", "hsr", "zzz", "wuwa"];
 
 const loadCodeChannels = async () => {
   const data = await prisma.codeChannel.findMany();
@@ -10,12 +10,12 @@ const loadCodeChannels = async () => {
 
   console.log("Loaded code channels:");
   console.table(codeChannels);
-}
+};
 
 const getCodeChannels = (gameType) => {
   const codes = codeChannels.filter((entry) => entry.gameType === gameType);
   return codes.map((entry) => entry.channelId);
-}
+};
 
 const addCodeChannel = async (gameType, channelId) => {
   if (!allowedGameTypes.includes(gameType)) {
@@ -30,10 +30,10 @@ const addCodeChannel = async (gameType, channelId) => {
   });
 
   await loadCodeChannels();
-}
+};
 
 module.exports = {
   loadCodeChannels,
   getCodeChannels,
   addCodeChannel,
-}
+};
