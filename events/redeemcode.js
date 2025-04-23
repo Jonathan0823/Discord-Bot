@@ -123,6 +123,10 @@ ${codes
               await message.client.channels.fetch(channelId);
             if (targetChannel && targetChannel.isTextBased()) {
               await targetChannel.send({ embeds: [embed] });
+
+              for (const value of codes) {
+                await targetChannel.send(value.code);
+              }
             }
           } catch (error) {
             console.error(`Failed to send to channel ${channelId}:`, error);
