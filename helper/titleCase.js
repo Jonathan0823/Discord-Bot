@@ -8,4 +8,8 @@ const titleCase = (str) => {
     .join(" ");
 };
 
-module.exports = titleCase;
+const removeWhitespace = (str) => {
+  return str.replace(/\s+/g, "");
+};
+
+module.exports = { titleCase, removeWhitespace };

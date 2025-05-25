@@ -2,6 +2,7 @@ require("dotenv/config");
 const { EmbedBuilder } = require("discord.js");
 const { getRandomColor } = require("../helper/randomColor");
 const { getCodeChannels } = require("../utils/redeemCodeChannels");
+const { removeWhitespace } = require("../helper/titleCase");
 
 const AUTHORIZED_USER = "lynz727wysi";
 
@@ -51,7 +52,10 @@ const parseMessage = (content) => {
   const codes = content.split(",").map((entry) => {
     const [code, ...valueParts] = entry.trim().split(" ");
     const value = valueParts.join(" ") || "";
-    return { code: code.toUpperCase(), value };
+    return {
+      code: removeWhitespace(code.toUpperCase()),
+      value: removeWhitespace(value),
+    };
   });
 
   return codes;
