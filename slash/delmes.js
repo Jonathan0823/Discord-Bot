@@ -1,22 +1,22 @@
-const {
+import {
   SlashCommandBuilder,
   PermissionFlagsBits,
   MessageFlagsBitField,
-} = require("discord.js");
+} from "discord.js";
 
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName("delmes")
     .setDescription(
-      "Delete all messages in the channel (max 100 per batch, within 14 days)"
+      "Delete all messages in the channel (max 100 per batch, within 14 days)",
     )
     .addStringOption((option) =>
       option
         .setName("amount")
         .setDescription(
-          "Number of messages to delete, max 100 per batch, or 'all'"
+          "Number of messages to delete, max 100 per batch, or 'all'",
         )
-        .setRequired(true)
+        .setRequired(true),
     )
     .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
 
@@ -32,7 +32,7 @@ module.exports = {
         !interaction.member.permissions.has(PermissionFlagsBits.Administrator)
       ) {
         return interaction.editReply(
-          "You do not have the required permissions to use this command!"
+          "You do not have the required permissions to use this command!",
         );
       }
 
@@ -50,7 +50,7 @@ module.exports = {
           limit: fetchAmount,
         });
         const filteredMessages = messages.filter(
-          (msg) => msg.createdTimestamp > twoWeeksAgo
+          (msg) => msg.createdTimestamp > twoWeeksAgo,
         );
 
         if (filteredMessages.size === 0) {
@@ -67,13 +67,13 @@ module.exports = {
       }
 
       await interaction.editReply(
-        `Deleted ${totalDeleted} messages from the last 14 days!`
+        `Deleted ${totalDeleted} messages from the last 14 days!`,
       );
     } catch (error) {
       console.error("Error processing the delmes command:", error);
       if (!interaction.replied) {
         await interaction.editReply(
-          "An error occurred while processing your command!"
+          "An error occurred while processing your command!",
         );
       }
     } finally {

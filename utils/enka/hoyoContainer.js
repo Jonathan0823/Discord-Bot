@@ -1,7 +1,7 @@
-const { MessageFlagsBitField, EmbedBuilder } = require("discord.js");
-const { Wrapper } = require("enkanetwork.js");
-const { getRandomColor } = require("../../helper/randomColor");
-const { getHoyoAssetsfromURL } = require("./getHoyoAssetsfromURL");
+import { MessageFlagsBitField, EmbedBuilder } from "discord.js";
+import { Wrapper } from "enkanetwork.js";
+import getRandomColor from "../../helper/randomColor.js";
+import { getHoyoAssetsfromURL } from "./getHoyoAssetsfromURL.js";
 
 async function hoyoContainer(message, type, id) {
   const wrapper = new Wrapper({
@@ -19,7 +19,7 @@ async function hoyoContainer(message, type, id) {
     const profilePicture = await getHoyoAssetsfromURL(
       type,
       response.player.profilePicture.assets.oldIcon ||
-        response.player.profilePicture.assets.icon
+        response.player.profilePicture.assets.icon,
     );
 
     const embed = new EmbedBuilder()
@@ -34,7 +34,7 @@ async function hoyoContainer(message, type, id) {
         Adventure Rank: ${response?.player.levels.rank}
         Achievements: ${response?.player.achievements}
         Latest Abyss: Floor ${response.player.abyss.floor} Chamber ${response.player.abyss.chamber}, ${response.player.abyss.stars} Stars
-        `
+        `,
       );
 
     message.deleteReply();
@@ -45,4 +45,4 @@ async function hoyoContainer(message, type, id) {
   }
 }
 
-module.exports = { hoyoContainer };
+export { hoyoContainer };

@@ -1,12 +1,12 @@
-const {
+import {
   EmbedBuilder,
   ButtonBuilder,
   ButtonStyle,
   ActionRowBuilder,
-} = require("discord.js");
-const cron = require("node-cron");
-const { getRandomColor } = require("../helper/randomColor");
-const { prisma } = require("../lib/prisma");
+} from "discord.js";
+import cron from "node-cron";
+import getRandomColor from "../helper/randomColor.js";
+import prisma from "../lib/prisma.js";
 
 let channelId = [];
 let scheduledJobs = {};
@@ -185,8 +185,4 @@ async function triggerAlarm(client, channelIds, type) {
   }
 }
 
-module.exports = {
-  setupDailyAlarm,
-  triggerAlarm,
-  loadAlarmId,
-};
+export { setupDailyAlarm, triggerAlarm, loadAlarmId };

@@ -1,20 +1,20 @@
-const { SlashCommandBuilder } = require("discord.js");
-const { hoyoContainer } = require("../utils/enka/hoyoContainer");
+import { SlashCommandBuilder } from "discord.js";
+import { hoyoContainer } from "../utils/enka/hoyoContainer.js";
 
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName("genshin")
     .setDescription("Genshin Impact related commands")
     .addStringOption((option) =>
       option
         .setName("id")
-        .setDescription("The ID of the account you want to view")
+        .setDescription("The ID of the account you want to view"),
     ),
   async execute(interaction) {
     await hoyoContainer(
       interaction,
       "genshin",
-      interaction.options.getString("id")
+      interaction.options.getString("id"),
     );
   },
 };

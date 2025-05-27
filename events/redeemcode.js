@@ -1,8 +1,8 @@
-require("dotenv/config");
-const { EmbedBuilder } = require("discord.js");
-const { getRandomColor } = require("../helper/randomColor");
-const { getCodeChannels } = require("../utils/redeemCodeChannels");
-const { removeWhitespace } = require("../helper/titleCase");
+import "dotenv/config";
+import { EmbedBuilder } from "discord.js";
+import { removeWhitespace } from "../helper/titleCase.js";
+import getRandomColor from "../helper/randomColor.js";
+import { getCodeChannels } from "../utils/redeemCodeChannels.js";
 
 const AUTHORIZED_USER = "lynz727wysi";
 
@@ -61,7 +61,7 @@ const parseMessage = (content) => {
   return codes;
 };
 
-module.exports = {
+export default {
   name: "messageCreate",
   async execute(message) {
     // Check if message is in one of the monitored channels

@@ -1,8 +1,8 @@
-const { SlashCommandBuilder, MessageFlagsBitField } = require("discord.js");
-const { prisma } = require("../lib/prisma");
-const { updateSongList } = require("../utils/songlist");
+import { SlashCommandBuilder, MessageFlagsBitField } from "discord.js";
+import prisma from "../lib/prisma.js";
+import { updateSongList } from "../utils/songlist.js";
 
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName("removesong")
     .setDescription("Removes a song from the song list")
@@ -10,7 +10,7 @@ module.exports = {
       option
         .setName("song")
         .setDescription("The song to remove")
-        .setRequired(true)
+        .setRequired(true),
     ),
 
   async execute(interaction) {
@@ -19,21 +19,19 @@ module.exports = {
     if (sender !== "lynz727wysi") {
       await interaction.reply({
         content: "You are not authorized to use this command.",
-        flags: MessageFlagsBitField.Flags.Ephemeral
-        ,
+        flags: MessageFlagsBitField.Flags.Ephemeral,
       });
       return;
     }
 
     const song = interaction.options.getString("song");
 
-
     try {
       await prisma.songList.delete({
         where: {
           songName: song,
-        }
-      })
+        },
+      });
     } catch (err) {
       console.error(err);
       await interaction.reply({
@@ -48,7 +46,5 @@ module.exports = {
       content: `Song ${song} has been removed from the song list.`,
       flags: MessageFlagsBitField.Flags.Ephemeral,
     });
-
-
-  }
-}
+  },
+};

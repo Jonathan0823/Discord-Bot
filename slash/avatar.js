@@ -1,8 +1,11 @@
-const { EmbedBuilder, MessageFlagsBitField } = require("discord.js");
-const { SlashCommandBuilder } = require("discord.js");
-const { getRandomColor } = require("../helper/randomColor");
+import {
+  EmbedBuilder,
+  MessageFlagsBitField,
+  SlashCommandBuilder,
+} from "discord.js";
+import getRandomColor from "../helper/randomColor.js";
 
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName("avatar")
     .setDescription("Get the avatar of a user")
@@ -10,7 +13,7 @@ module.exports = {
       option
         .setName("user")
         .setDescription("The user whose avatar you want to view")
-        .setRequired(false)
+        .setRequired(false),
     ),
 
   execute: async (interaction) => {

@@ -1,4 +1,4 @@
-const { prisma } = require("../lib/prisma");
+import prisma from "../lib/prisma.js";
 
 let triggers = {};
 
@@ -31,7 +31,4 @@ const triggerWords = async (interaction) => {
   }
 };
 
-module.exports = {
-  triggerWords,
-  loadTriggerWords,
-};
+export { triggerWords, loadTriggerWords };

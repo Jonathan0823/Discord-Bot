@@ -1,8 +1,8 @@
-const { SlashCommandBuilder, MessageFlagsBitField } = require("discord.js");
-const { prisma } = require("../lib/prisma");
-const { loadTriggerWords } = require("../events/triggerWord");
+import { SlashCommandBuilder, MessageFlagsBitField } from "discord.js";
+import { loadTriggerWords } from "../utils/triggerWord.js";
+import prisma from "../lib/prisma.js";
 
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName("deletetriggerword")
     .setDescription("Delete a trigger word from the list")
@@ -10,7 +10,7 @@ module.exports = {
       option
         .setName("key")
         .setDescription("The word to delete")
-        .setRequired(true)
+        .setRequired(true),
     ),
 
   async execute(interaction) {

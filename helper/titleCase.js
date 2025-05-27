@@ -12,4 +12,4 @@ const removeWhitespace = (str) => {
   return str.replace(/\s+/g, "");
 };
 
-module.exports = { titleCase, removeWhitespace };
+export { titleCase, removeWhitespace };

@@ -29,4 +29,4 @@ function splitMessage(message, maxLength = 2000) {
   return messages;
 }
 
-module.exports = splitMessage;
+export default splitMessage;

@@ -1,4 +1,4 @@
-const { prisma } = require("../lib/prisma");
+import prisma from "../lib/prisma.js";
 
 let songs = [];
 
@@ -18,8 +18,4 @@ const updateSongList = async () => {
   songs = await loadSong();
 };
 
-module.exports = {
-  loadSong,
-  getSong,
-  updateSongList,
-};
+export { loadSong, getSong, updateSongList };

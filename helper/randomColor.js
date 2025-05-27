@@ -7,4 +7,4 @@ const getRandomColor = () => {
   return color;
 };
 
-module.exports = { getRandomColor };
+export default getRandomColor;

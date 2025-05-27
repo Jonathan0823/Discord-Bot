@@ -1,19 +1,21 @@
-const { SlashCommandBuilder } = require("discord.js");
-const { addCodeChannel } = require("../utils/redeemCodeChannels");
+import { SlashCommandBuilder } from "discord.js";
+import { addCodeChannel } from "../utils/redeemCodeChannels.js";
 
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName("addredeemchannels")
     .setDescription("Add channels to redeem code tracking.")
-    .addStringOption(option =>
-      option.setName("channel")
+    .addStringOption((option) =>
+      option
+        .setName("channel")
         .setDescription("The channel to add.")
-        .setRequired(true)
+        .setRequired(true),
     )
-    .addStringOption(option =>
-      option.setName("game")
+    .addStringOption((option) =>
+      option
+        .setName("game")
         .setDescription("The game to add.")
-        .setRequired(true)
+        .setRequired(true),
     ),
 
   async execute(interaction) {
@@ -43,6 +45,5 @@ module.exports = {
     await interaction.reply({
       content: `The channel ID "${channelId}" with game type "${game}" has been added to the list!`,
     });
-
-  }
-}
+  },
+};

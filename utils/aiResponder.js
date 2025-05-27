@@ -1,8 +1,8 @@
-require("dotenv/config");
-const { GoogleGenerativeAI } = require("@google/generative-ai");
-const splitMessage = require("../helper/splitMessage");
-const { getUserName } = require("../helper/getUserName");
-const titleCase = require("../helper/titleCase");
+import "dotenv/config";
+import { GoogleGenerativeAI } from "@google/generative-ai";
+import getUserName from "../helper/getUserName.js";
+import { titleCase } from "../helper/titleCase.js";
+import splitMessage from "../helper/splitMessage.js";
 
 const conversationMemory = new Map();
 
@@ -16,7 +16,6 @@ async function aiResponder(message, args, systemInstruction, commandName) {
 
   const user = getUserName(message);
   const guildId = message.guildId;
-
 
   // Use a combination of guildId and commandName for namespacing
   const memoryKey = `${guildId}-${commandName}`;
@@ -50,7 +49,7 @@ async function aiResponder(message, args, systemInstruction, commandName) {
     const result = await model.generateContent(
       `Conversation Context:\n${contextString}\n\n
       from ${user}: ${prompt}
-      `
+      `,
     );
 
     const aiResponse = result.response.text();
@@ -63,14 +62,14 @@ async function aiResponder(message, args, systemInstruction, commandName) {
 
     channelHistory.push(
       { sender: user, content: prompt },
-      { sender: commandName, content: aiResponse }
+      { sender: commandName, content: aiResponse },
     );
   } catch (error) {
     console.error("Gemini API error:", error);
     await message.channel.send(
-      "Sorry, something went wrong with the AI generation."
+      "Sorry, something went wrong with the AI generation.",
     );
   }
 }
 
-module.exports = aiResponder;
+export default aiResponder;

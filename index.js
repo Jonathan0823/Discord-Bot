@@ -1,15 +1,20 @@
-require("dotenv/config");
-require("./server");
-const fs = require("fs");
-const path = require("path");
-const {
+import "dotenv/config";
+import "./server.js";
+import fs from "fs";
+import path from "path";
+import {
   Client,
   GatewayIntentBits,
   REST,
   Routes,
   ActivityType,
   MessageFlagsBitField,
-} = require("discord.js");
+} from "discord.js";
+import { loadAlarmId, setupDailyAlarm, triggerAlarm } from "./utils/alarm.js";
+import { getSong, updateSongList } from "./utils/songlist.js";
+import { loadTriggerWords, triggerWords } from "./utils/triggerWord.js";
+import { loadCodeChannels } from "./utils/redeemCodeChannels.js";
+import { fileURLToPath, pathToFileURL } from "url";
 const client = new Client({
   intents: [
     GatewayIntentBits.Guilds,
@@ -17,10 +22,6 @@ const client = new Client({
     GatewayIntentBits.MessageContent,
   ],
 });
-const { setupDailyAlarm, triggerAlarm, loadAlarmId } = require("./utils/alarm");
-const { updateSongList, getSong } = require("./utils/songlist");
-const { triggerWords, loadTriggerWords } = require("./events/triggerWord");
-const { loadCodeChannels } = require("./utils/redeemCodeChannels");
 
 client.on("ready", async () => {
   await loadAlarmId();
@@ -46,6 +47,9 @@ client.on("ready", async () => {
   }, 1000 * 60);
 });
 
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
 const commands = [];
 const commandMap = new Map();
 const commandsPath = path.join(__dirname, "command");
@@ -66,20 +70,26 @@ const eventFiles = fs
   .filter((file) => file.endsWith(".js"));
 
 for (const file of commandFiles) {
-  const command = require(path.join(commandsPath, file));
+  const fullPath = path.join(commandsPath, file);
+  const module = await import(pathToFileURL(fullPath).href);
+  const command = module.default;
   commands.push(command);
   commandMap.set(command.data.name, command);
 }
 
 for (const file of slashFiles) {
-  const command = require(path.join(slashPath, file));
+  const fullPath = path.join(slashPath, file);
+  const module = await import(pathToFileURL(fullPath).href);
+  const command = module.default;
   slashCommands.push(command.data.toJSON());
   slashCommandMap.set(command.data.name, command);
 }
 
 for (const file of eventFiles) {
   const filePath = path.join(eventsPath, file);
-  const event = require(filePath);
+
+  const eventModule = await import(pathToFileURL(filePath).href);
+  const event = eventModule.default;
 
   if (event.once) {
     client.once(event.name, (...args) => event.execute(...args));
@@ -89,7 +99,7 @@ for (const file of eventFiles) {
 }
 
 const rest = new REST({ version: "10" }).setToken(
-  process.env.DISCORD_BOT_TOKEN
+  process.env.DISCORD_BOT_TOKEN,
 );
 
 (async () => {
@@ -141,7 +151,7 @@ const executeCommand = async (interaction, isSlash = true) => {
 
           if (!interaction.replied && !interaction.deferred) {
             await interaction.reply(
-              "There was an error executing that command!"
+              "There was an error executing that command!",
             );
           }
           return true;
@@ -161,7 +171,7 @@ const executeCommand = async (interaction, isSlash = true) => {
         } catch (error) {
           console.error(
             `Error in slash command ${interaction.commandName}:`,
-            error
+            error,
           );
 
           if (!interaction.replied && !interaction.deferred) {
@@ -186,12 +196,12 @@ const executeCommand = async (interaction, isSlash = true) => {
 client.on("messageCreate", async (message) => {
   if (message.content === "!alarm") {
     const channelId = [message.channel.id];
-    await triggerAlarm(message.client, channelId, (type = "hoyo"));
+    await triggerAlarm(message.client, channelId, "hoyo");
     message.reply("Alarm triggered for testing!");
   }
   if (message.content === "!alarmwuwa") {
     const channelId = [message.channel.id];
-    await triggerAlarm(message.client, channelId, (type = "wuwa"));
+    await triggerAlarm(message.client, channelId, "wuwa");
     message.reply("Alarm triggered for testing!");
   }
   await executeCommand(message, false);

@@ -1,6 +1,6 @@
-const aiResponder = require("../utils/aiResponder");
+import aiResponder from "../utils/aiResponder.js";
 
-module.exports = {
+export default {
   data: {
     name: "cam",
     description: "Replies with a Camellya-like response!",

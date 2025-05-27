@@ -1,8 +1,8 @@
-const { prisma } = require("../lib/prisma");
-const { updateSongList } = require("../utils/songlist");
+import prisma from "../lib/prisma.js";
+import { updateSongList } from "../utils/songlist.js";
 
 const channelId = "1347471345356767294";
-module.exports = {
+export default {
   name: "messageCreate",
   async execute(message) {
     const isSongChannel = message.channel.id === channelId;

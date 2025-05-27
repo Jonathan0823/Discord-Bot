@@ -1,8 +1,8 @@
-const { SlashCommandBuilder, MessageFlagsBitField } = require("discord.js");
-const { prisma } = require("../lib/prisma");
-const { setupDailyAlarm, loadAlarmId } = require("../utils/alarm");
+import { SlashCommandBuilder, MessageFlagsBitField } from "discord.js";
+import prisma from "../lib/prisma.js";
+import { loadAlarmId, setupDailyAlarm } from "../utils/alarm.js";
 
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName("setupdailyalarm")
     .setDescription("Set up daily alarm for a channel")
@@ -10,7 +10,7 @@ module.exports = {
       option
         .setName("channelid")
         .setDescription("The channel ID")
-        .setRequired(true)
+        .setRequired(true),
     ),
 
   async execute(interaction) {

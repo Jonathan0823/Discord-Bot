@@ -1,4 +1,4 @@
-const { AssetFinder } = require("enkanetwork.js");
+import { AssetFinder } from "enkanetwork.js";
 
 const wrapper = new AssetFinder();
 
@@ -13,4 +13,4 @@ const getHoyoAssetsfromURL = async (type, name) => {
   }
 };
 
-module.exports = { getHoyoAssetsfromURL };
+export { getHoyoAssetsfromURL };

@@ -1,11 +1,11 @@
-const {
+import {
   SlashCommandBuilder,
   MessageFlagsBitField,
   AttachmentBuilder,
-} = require("discord.js");
-const { downloadFile } = require("../helper/downloadFile");
+} from "discord.js";
+import downloadFile from "../helper/downloadFile.js";
 
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
     .setName("send")
     .setDescription("Send a message to a specified channel"),
@@ -56,7 +56,7 @@ module.exports = {
         attachments.map(async ({ url, name }) => {
           const fileBuffer = await downloadFile(url);
           return new AttachmentBuilder(fileBuffer, { name });
-        })
+        }),
       );
 
       await collectedMessage.first().delete();
@@ -86,12 +86,11 @@ module.exports = {
       const ArrayChannelId = channelId.split(" ");
 
       ArrayChannelId.forEach(async (channelId) => {
-        const targetChannel = await interaction.client.channels.fetch(
-          channelId
-        );
+        const targetChannel =
+          await interaction.client.channels.fetch(channelId);
         if (!targetChannel || !targetChannel.isTextBased()) {
           await interaction.editReply(
-            "Error: The provided channel ID is invalid."
+            "Error: The provided channel ID is invalid.",
           );
           return;
         }
@@ -106,11 +105,11 @@ module.exports = {
     } catch (error) {
       if (error.message === "time") {
         await interaction.editReply(
-          "Time expired! Please try the command again."
+          "Time expired! Please try the command again.",
         );
       } else if (error.name === "DiscordAPIError") {
         await interaction.editReply(
-          "Error: Could not find or access the specified channel."
+          "Error: Could not find or access the specified channel.",
         );
       } else {
         console.error("Unexpected error:", error);

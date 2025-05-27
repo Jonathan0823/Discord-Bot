@@ -1,17 +1,19 @@
-const { SlashCommandBuilder } = require('discord.js');
+import { SlashCommandBuilder } from "discord.js";
 
-module.exports = {
+export default {
   data: new SlashCommandBuilder()
-    .setName('ping')
-    .setDescription('Replies with Pong and shows bot statistics!'),
+    .setName("ping")
+    .setDescription("Replies with Pong and shows bot statistics!"),
 
   async execute(interaction) {
     // Get the bot's WebSocket ping
     const wsPing = interaction.client.ws.ping;
 
-
     // Calculate API latency
-    const sent = await interaction.reply({ content: 'Pinging...', fetchReply: true });
+    const sent = await interaction.reply({
+      content: "Pinging...",
+      fetchReply: true,
+    });
     const apiLatency = sent.createdTimestamp - interaction.createdTimestamp;
 
     // Edit the reply to include stats

@@ -1,6 +1,6 @@
-const aiResponder = require("../utils/aiResponder");
+import aiResponder from "../utils/aiResponder.js";
 
-module.exports = {
+export default {
   data: {
     name: "hutao",
     description: "Replies with a Hutao-like response!",

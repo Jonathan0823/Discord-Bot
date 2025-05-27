@@ -1,4 +1,4 @@
-const { prisma } = require("../lib/prisma");
+import prisma from "../lib/prisma.js";
 
 let codeChannels = [];
 
@@ -32,8 +32,4 @@ const addCodeChannel = async (gameType, channelId) => {
   await loadCodeChannels();
 };
 
-module.exports = {
-  loadCodeChannels,
-  getCodeChannels,
-  addCodeChannel,
-};
+export { loadCodeChannels, getCodeChannels, addCodeChannel };
