@@ -27,6 +27,8 @@ const getEmoji = (game) => {
       return "<:hsr:1324355673567395921>";
     case "zzz":
       return "<:zenless:1324356078825377932>";
+    case "wuwa":
+      return "<:chixiayatta:1336876161803882586>";
     default:
       return "";
   }
